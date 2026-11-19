@@ -112,7 +112,7 @@
   </header>
 
   <div class="searchbar">
-    <input id="q" type="text" placeholder="输入英文单词或短语，如 artificial" autocomplete="off" spellcheck="false">
+    <input id="q" type="text" placeholder="英文单词/句子 或 中文，如 artificial" autocomplete="off" spellcheck="false">
     <button id="go">查询</button>
   </div>
   <div class="hint">回车即可查询 · 支持单词、短语、词组</div>
@@ -162,6 +162,13 @@ function play(url,btn){
 }
 
 function render(d){
+  if(d.type==='sentence'){
+    const label=d.dir==='zh2en'?'中译英':'英译中';
+    resultEl.innerHTML=`<div class="card"><div class="ph" style="font-size:24px;font-weight:600;color:#1f2430;line-height:1.7">${esc(d.translation)}</div>
+      <div style="color:#5b6472;margin-top:10px;border-top:1px solid #e6e9ee;padding-top:10px">${esc(d.text)}</div>
+      <p><small>${label} · ${esc(d.source||'')}${d.quality?' · 匹配度 '+Math.round(d.quality*100)+'%':''}</small></p></div>`;
+    return;
+  }
   if(d.error && !d.senses.length && !d.examples.length){
     resultEl.innerHTML=`<div class="card"><div class="empty"><div class="big">🔎</div>${esc(d.error)}</div></div>`;
     return;
@@ -273,10 +280,10 @@ async function doLookup(){
   if(!w){toast('请输入单词');q.focus();return}
   go.disabled=true;statusEl.textContent='查询中…';resultEl.innerHTML='';
   try{
-    const res=await fetch('/api/lookup?word='+encodeURIComponent(w));
+    const res=await fetch('/api/translate?text='+encodeURIComponent(w));
     const d=await res.json();
     current=d; render(d); statusEl.textContent='';
-    if(!d._offline && !d.error) pushHistory(d.word||w);
+    if(d.type!=='sentence' && !d._offline && !d.error) pushHistory(d.word||w);
   }catch(e){statusEl.textContent='';resultEl.innerHTML=`<div class="card"><div class="empty">服务连接失败，请确认已启动 WordLens 服务</div></div>`}
   finally{go.disabled=false}
 }

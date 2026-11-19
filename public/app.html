@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WordLens · 词典工作台</title>
+<link rel="icon" href="/app.ico">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="stylesheet" href="/learn.css">
+<style>
+:root{
+  --bg:#f4f6fb; --panel:#ffffff; --panel-2:#fafbff; --line:#e7eaf3;
+  --text:#1b2138; --sub:#6b7391; --muted:#98a0bd;
+  --brand:#4f46e5; --brand-2:#2563eb; --brand-soft:#eef0ff;
+  --ok:#16a34a; --warn:#ea580c; --danger:#e11d48;
+  --shadow:0 8px 30px rgba(31,41,90,.08); --shadow-sm:0 2px 10px rgba(31,41,90,.06);
+  --radius:16px;
+}
+[data-theme="dark"]{
+  --bg:#111524; --panel:#1a2033; --panel-2:#202741; --line:#2b3350;
+  --text:#eef1ff; --sub:#a6aecb; --muted:#7b84a5;
+  --brand:#8b83ff; --brand-2:#5b9dff; --brand-soft:#282c4d;
+  --shadow:0 8px 30px rgba(0,0,0,.30); --shadow-sm:0 2px 10px rgba(0,0,0,.22);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  font-family:"Segoe UI Variable","Segoe UI","Microsoft YaHei",system-ui,sans-serif;
+  background:var(--bg);color:var(--text);font-size:14px;overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:9px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+
+/* ---------- 布局 ---------- */
+#app{display:flex;height:100vh}
+.sidebar{
+  width:216px;flex:0 0 216px;background:var(--panel);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;padding:20px 12px 14px;
+}
+.brand{display:flex;align-items:center;gap:11px;padding:2px 10px 22px}
+.brand img{width:38px;height:38px;border-radius:10px}
+.brand b{font-size:17px;letter-spacing:.2px;display:block;line-height:1.15}
+.brand small{color:var(--muted);font-size:11px;letter-spacing:.4px}
+.nav{display:flex;flex-direction:column;gap:3px}
+.nav-item{
+  display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:11px;
+  color:var(--sub);border:0;background:transparent;text-align:left;width:100%;
+  font-weight:500;transition:.15s;position:relative;
+}
+.nav-item svg{width:18px;height:18px;flex:0 0 18px}
+.nav-item:hover{background:var(--panel-2);color:var(--text)}
+.nav-item.active{background:var(--brand-soft);color:var(--brand);font-weight:650}
+.nav-item .badge{
+  margin-left:auto;background:var(--brand);color:#fff;font-size:10px;font-weight:700;
+  min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 5px;
+}
+.nav-sep{height:1px;background:var(--line);margin:14px 10px}
+.sidebar-bottom{margin-top:auto;padding:12px 10px 2px}
+.status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--sub)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(22,163,74,.13)}
+.dot.off{background:var(--danger);box-shadow:0 0 0 3px rgba(225,29,72,.13)}
+.side-ver{color:var(--muted);font-size:11px;margin-top:6px;padding-left:16px}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{
+  height:64px;flex:0 0 64px;background:var(--panel);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:14px;padding:0 26px;
+}
+.topbar h1{font-size:16px;margin:0;font-weight:650;white-space:nowrap}
+.top-search{
+  margin-left:auto;display:flex;align-items:center;gap:8px;background:var(--panel-2);
+  border:1px solid var(--line);border-radius:11px;padding:0 12px;height:38px;width:min(340px,38%);
+}
+.top-search svg{width:16px;height:16px;color:var(--muted);flex:0 0 16px}
+.top-search input{border:0;outline:0;background:transparent;flex:1;min-width:0}
+.top-search kbd{font-size:10px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:2px 5px;white-space:nowrap}
+.icon-btn{
+  width:38px;height:38px;border-radius:11px;border:1px solid var(--line);background:var(--panel-2);
+  display:grid;place-items:center;color:var(--sub);transition:.15s;flex:0 0 38px;
+}
+.icon-btn:hover{color:var(--brand);border-color:var(--brand)}
+.icon-btn svg{width:17px;height:17px}
+.content{flex:1;overflow:auto;padding:26px 30px 40px;scroll-behavior:smooth}
+.view{display:none;max-width:1080px;margin:0 auto;animation:fade .22s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ---------- 通用组件 ---------- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+.btn{
+  border:0;border-radius:10px;padding:9px 15px;font-weight:600;background:var(--brand);color:#fff;
+  display:inline-flex;align-items:center;gap:7px;transition:.15s;white-space:nowrap;
+}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;filter:none}
+.btn svg{width:15px;height:15px}
+.btn.ghost{background:var(--panel-2);color:var(--sub);border:1px solid var(--line)}
+.btn.ghost:hover{color:var(--brand)}
+.btn.sm{padding:6px 11px;font-size:12px;border-radius:8px}
+.btn.danger{background:var(--danger)}
+.tag{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:2px 8px;font-size:11px;font-weight:650}
+.muted{color:var(--muted)}
+.empty{text-align:center;padding:56px 20px;color:var(--muted)}
+.empty svg{width:46px;height:46px;opacity:.45;margin-bottom:12px}
+.section-title{font-size:13px;font-weight:700;color:var(--sub);margin:22px 0 10px;letter-spacing:.3px}
+
+/* ---------- 翻译页 ---------- */
+.hero{text-align:center;padding:26px 0 22px}
+.hero .logo{width:66px;height:66px;border-radius:18px;box-shadow:var(--shadow);margin-bottom:14px}
+.hero h2{margin:0 0 6px;font-size:22px;font-weight:700}
+.hero p{margin:0;color:var(--sub);font-size:13px}
+.hero.compact{padding:10px 0 6px}
+.hero.compact .logo{width:40px;height:40px;border-radius:12px;margin-bottom:6px}
+.hero.compact h2{font-size:16px}
+.hero.compact p{display:none}
+.hero.compact + .big-search{margin-top:12px}
+.big-search{
+  display:flex;align-items:center;gap:10px;background:var(--panel);border:1.5px solid var(--line);
+  border-radius:15px;padding:7px 8px 7px 17px;box-shadow:var(--shadow);max-width:760px;margin:22px auto 0;
+  transition:.2s;
+}
+.big-search:focus-within{border-color:var(--brand);box-shadow:0 10px 34px rgba(79,70,229,.16)}
+.big-search svg{width:19px;height:19px;color:var(--muted);flex:0 0 19px}
+.big-search input{flex:1;border:0;outline:0;background:transparent;font-size:16px;min-width:0;height:40px}
+.big-search .btn{height:40px;padding:0 20px}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0 0}
+.chip{
+  border:1px solid var(--line);background:var(--panel);color:var(--sub);border-radius:20px;
+  padding:5px 13px;font-size:12px;transition:.15s;
+}
+.chip:hover{border-color:var(--brand);color:var(--brand)}
+.tool-row{display:flex;gap:8px;justify-content:center;margin-top:12px}
+.result{margin-top:24px}
+.loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:40px;color:var(--sub)}
+.spinner{width:18px;height:18px;border:2px solid var(--line);border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.word-head{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.word-title{font-size:32px;font-weight:750;letter-spacing:-.5px;line-height:1.15}
+.phones{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;color:var(--sub);font-size:13px}
+.phone-pill{display:inline-flex;align-items:center;gap:6px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:4px 9px}
+.audio-btn{border:0;background:var(--brand-soft);color:var(--brand);width:24px;height:24px;border-radius:7px;display:grid;place-items:center}
+.audio-btn svg{width:13px;height:13px}
+.head-actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.sense{padding:13px 0;border-bottom:1px dashed var(--line)}
+.sense:last-child{border-bottom:0}
+.sense .pos{color:var(--brand);font-weight:700;font-size:13px;margin-bottom:5px;font-style:italic}
+.sense .defs{line-height:1.85}
+.def-line{display:flex;gap:8px}
+.def-line i{color:var(--muted);font-style:normal;min-width:18px}
+.ex{padding:10px 0;border-bottom:1px dashed var(--line)}
+.ex:last-child{border-bottom:0}
+.ex .en{line-height:1.6}
+.ex .zh{color:var(--sub);font-size:13px;margin-top:3px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:840px){.grid-2{grid-template-columns:1fr}}
+.pad{padding:18px 20px}
+.pill-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pill{background:var(--panel-2);border:1px solid var(--line);border-radius:9px;padding:7px 11px;font-size:12.5px;line-height:1.5}
+.pill b{color:var(--brand)}
+.pill span{color:var(--sub);margin-left:6px}
+.sentence-card{text-align:center;padding:36px 26px}
+.sentence-card .trans{font-size:28px;font-weight:700;line-height:1.5;word-break:break-word}
+.sentence-card .src{color:var(--sub);margin-top:14px;font-size:15px;line-height:1.7}
+.sentence-card .meta{color:var(--muted);font-size:12px;margin-top:18px}
+.sentence-card .acts{display:flex;gap:8px;justify-content:center;margin-top:20px}
+
+/* ---------- 生词本 ---------- */
+.list-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.list-toolbar input{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:9px 13px;outline:0;min-width:220px}
+.list-toolbar input:focus{border-color:var(--brand)}
+.list-toolbar .spacer{flex:1}
+.book-list{display:flex;flex-direction:column;gap:10px}
+.book-item{display:flex;align-items:center;gap:14px;padding:14px 18px}
+.book-item .w{font-size:17px;font-weight:700;min-width:150px;word-break:break-word}
+.book-item .d{color:var(--sub);flex:1;line-height:1.5;font-size:13px;word-break:break-word}
+.lv{font-size:11px;font-weight:700;border-radius:7px;padding:3px 8px;background:var(--brand-soft);color:var(--brand);white-space:nowrap}
+.lv.l0{background:var(--panel-2);color:var(--muted)}
+.row-btn{border:0;background:transparent;color:var(--muted);width:30px;height:30px;border-radius:8px;display:grid;place-items:center}
+.row-btn:hover{background:var(--panel-2);color:var(--brand)}
+.row-btn.del:hover{color:var(--danger)}
+.row-btn svg{width:16px;height:16px}
+
+/* ---------- 闪卡 ---------- */
+.flash-wrap{max-width:620px;margin:0 auto;text-align:center}
+.flash-progress{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.bar{flex:1;height:7px;background:var(--line);border-radius:7px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2));border-radius:7px;transition:.3s}
+.flash-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);
+  min-height:300px;padding:44px 30px;cursor:pointer;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;transition:.2s;
+}
+.flash-card:hover{transform:translateY(-2px)}
+.flash-card .fw{font-size:38px;font-weight:750;word-break:break-word}
+.flash-card .fd{font-size:19px;color:var(--sub);line-height:1.7;word-break:break-word}
+.flash-card .hint{color:var(--muted);font-size:12px}
+.flash-acts{display:flex;gap:12px;justify-content:center;margin-top:22px}
+.flash-acts .btn{padding:11px 26px}
+
+/* ---------- 历史 ---------- */
+.hist-item{display:flex;align-items:center;gap:14px;padding:12px 18px;cursor:pointer;border-bottom:1px solid var(--line)}
+.hist-item:last-child{border-bottom:0}
+.hist-item:hover{background:var(--panel-2)}
+.hist-item .t{flex:1;word-break:break-word}
+.hist-item .time{color:var(--muted);font-size:12px;white-space:nowrap}
+
+/* ---------- 统计 ---------- */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:840px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+.stat{padding:20px}
+.stat .n{font-size:30px;font-weight:750;letter-spacing:-1px}
+.stat .l{color:var(--sub);font-size:12px;margin-top:5px}
+.stat .ic{width:34px;height:34px;border-radius:10px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;margin-bottom:12px}
+.stat .ic svg{width:18px;height:18px}
+.chart{padding:20px;margin-top:16px}
+.chart h3{margin:0 0 18px;font-size:14px}
+.bars{display:flex;align-items:flex-end;gap:6px;height:150px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px}
+.bar-col i{width:100%;max-width:34px;background:linear-gradient(180deg,var(--brand-2),var(--brand));border-radius:6px 6px 3px 3px;min-height:3px;transition:.3s}
+.bar-col:hover i{filter:brightness(1.15)}
+.bar-col span{font-size:10px;color:var(--muted);white-space:nowrap}
+.dist{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap}
+.dist div{display:flex;align-items:center;gap:7px;color:var(--sub);font-size:13px}
+.dist b{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+/* ---------- 设置 ---------- */
+.set-group{padding:20px;margin-bottom:16px}
+.set-group h3{margin:0 0 4px;font-size:15px}
+.set-group .desc{color:var(--muted);font-size:12px;margin-bottom:16px}
+.set-row{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.set-row .label{flex:1;min-width:180px}
+.set-row .label b{display:block;font-weight:600}
+.set-row .label small{color:var(--muted);font-size:12px}
+.hk-box{
+  border:2px dashed var(--line);border-radius:12px;padding:16px 26px;font-size:18px;font-weight:700;
+  color:var(--brand);outline:0;cursor:pointer;min-width:210px;text-align:center;background:var(--panel-2);
+}
+.hk-box:focus,.hk-box.capturing{border-color:var(--brand);background:var(--brand-soft)}
+.about-line{display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line);font-size:13px}
+.about-line span:first-child{color:var(--sub)}
+
+/* ---------- toast / 选中翻译 ---------- */
+#toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  background:#1b2138;color:#fff;padding:11px 20px;border-radius:11px;font-size:13px;box-shadow:var(--shadow);transition:.25s;z-index:99}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#selBtn{position:fixed;display:none;z-index:80;background:var(--brand);color:#fff;border:0;border-radius:9px;
+  padding:7px 12px;font-size:12px;font-weight:600;box-shadow:var(--shadow);align-items:center;gap:6px}
+#selBtn svg{width:13px;height:13px}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- 侧边栏 -->
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="/app-icon.png" alt="WordLens">
+      <div><b>WordLens</b><small>ENGLISH LEARNING DESK</small></div>
+    </div>
+    <nav class="nav" id="nav">
+      <button class="nav-item active" data-view="translate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5h12M9 3v2m-6 4h10M7 9v2m-2 4h12M11 15v2m-4 4h8"/><path d="M14 20l4-9 4 9m-7-3h6"/></svg>翻译查词</button>
+      <button class="nav-item" data-view="book"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>生词本 <span class="badge" id="bookBadge" style="display:none">0</span></button>
+      <button class="nav-item" data-view="flash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>闪卡复习 <span class="badge" id="dueBadge" style="display:none">0</span></button>
+      <div class="nav-sep"></div>
+      <button class="nav-item" data-view="course"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>学习中心</button>
+      <button class="nav-item" data-view="daily"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/><path d="M9 15l2 2 4-4"/></svg>每日任务 <span class="badge" id="dailyBadge" style="display:none">0</span></button>
+      <button class="nav-item" data-view="mistakes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>错题本 <span class="badge" id="mistakeBadge" style="display:none">0</span></button>
+      <div class="nav-sep"></div>
+      <button class="nav-item" data-view="history"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>查询历史</button>
+      <button class="nav-item" data-view="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="7"/><rect x="12" y="7" width="3" height="11"/><rect x="17" y="13" width="3" height="5"/></svg>学习统计</button>
+      <button class="nav-item" data-view="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>设置</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="status"><span class="dot" id="statusDot"></span><span id="statusText">正在连接本地服务…</span></div>
+      <div class="side-ver">v3.0 · 学习工作台 · 数据存本机</div>
+    </div>
+  </aside>
+
+  <!-- 主区域 -->
+  <div class="main">
+    <header class="topbar">
+      <h1 id="viewTitle">翻译查词</h1>
+      <div class="top-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="topQ" placeholder="快速查词 / 翻译…" autocomplete="off" spellcheck="false">
+        <kbd>Ctrl K</kbd>
+      </div>
+      <button class="icon-btn" id="btnClip" title="从剪贴板翻译"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg></button>
+      <button class="icon-btn" id="btnTheme" title="切换深浅色"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+    </header>
+
+    <div class="content" id="content">
+      <!-- 翻译 -->
+      <section class="view active" id="v-translate">
+        <div class="hero">
+          <img class="logo" src="/app-icon.png" alt="">
+          <h2>查词 · 翻译 · 收藏</h2>
+          <p>英文单词给完整词条，中英文句子自动互译，结果可一键加入生词本</p>
+        </div>
+        <div class="big-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="mainQ" placeholder="输入英文单词、句子或中文，回车查询…" autocomplete="off" spellcheck="false">
+          <button class="btn" id="btnGo">查询</button>
+        </div>
+        <div class="chips" id="chips"></div>
+        <div class="tool-row">
+          <button class="btn ghost sm" id="btnClip2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>从剪贴板翻译</button>
+          <button class="btn ghost sm" id="btnPopup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>打开迷你浮窗</button>
+        </div>
+        <div class="result" id="result"></div>
+      </section>
+
+      <!-- 生词本 -->
+      <section class="view" id="v-book">
+        <div class="list-toolbar">
+          <input id="bookFilter" placeholder="筛选生词…">
+          <div class="spacer"></div>
+          <button class="btn ghost sm" id="btnExport">导出 CSV</button>
+          <button class="btn ghost sm" id="btnToFlash">开始复习</button>
+          <button class="btn ghost sm" id="btnClearBook">清空</button>
+        </div>
+        <div class="book-list" id="bookList"></div>
+      </section>
+
+      <!-- 闪卡 -->
+      <section class="view" id="v-flash">
+        <div class="flash-wrap" id="flashWrap"></div>
+      </section>
+
+      <!-- 学习中心 -->
+      <section class="view" id="v-course"></section>
+
+      <!-- 每日任务 -->
+      <section class="view" id="v-daily"></section>
+
+      <!-- 错题本 -->
+      <section class="view" id="v-mistakes"></section>
+
+      <!-- 历史 -->
+      <section class="view" id="v-history">
+        <div class="list-toolbar"><div class="muted" id="histCount"></div><div class="spacer"></div><button class="btn ghost sm" id="btnClearHist">清空历史</button></div>
+        <div class="card" id="histList"></div>
+      </section>
+
+      <!-- 统计 -->
+      <section class="view" id="v-stats">
+        <div class="stat-grid" id="statGrid"></div>
+        <div class="card chart">
+          <h3>近 14 天查询趋势</h3>
+          <div class="bars" id="bars"></div>
+          <div class="dist">
+            <div><b style="background:var(--brand)"></b>单词查询 <span id="distWord"></span></div>
+            <div><b style="background:var(--brand-2)"></b>句子翻译 <span id="distSent"></span></div>
+            <div><b style="background:var(--ok)"></b>生词收藏 <span id="distFav"></span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 设置 -->
+      <section class="view" id="v-settings">
+        <div class="card set-group">
+          <h3>唤起热键</h3>
+          <div class="desc">按下组合键即可设置（需含 Ctrl / Alt / Shift / Win）。保存后重启托盘程序生效。</div>
+          <div class="set-row">
+            <div class="label"><b>当前热键</b><small id="hkCurrent">读取中…</small></div>
+            <div class="hk-box" id="hkBox" tabindex="0">点击后按下组合键</div>
+            <button class="btn sm" id="hkSave" disabled>保存</button>
+          </div>
+          <div class="set-row">
+            <div class="label"><b>使设置生效</b><small>托盘程序需重新读取配置；可右键托盘图标退出后重新双击启动脚本</small></div>
+            <button class="btn ghost sm" id="btnRestartHint">查看说明</button>
+          </div>
+        </div>
+        <div class="card set-group">
+          <h3>外观与行为</h3>
+          <div class="desc">个性化工作台的显示方式</div>
+          <div class="set-row">
+            <div class="label"><b>主题</b><small>浅色 / 深色，自动记住</small></div>
+            <button class="btn ghost sm" id="btnTheme2">切换主题</button>
+          </div>
+          <div class="set-row">
+            <div class="label"><b>发音</b><small>词条里的英音 / 美音按钮需要联网</small></div>
+            <span class="tag">始终开启</span>
+          </div>
+          <div class="set-row">
+            <div class="label"><b>快捷入口</b><small>迷你浮窗适合随查随走，完整词典页信息更全</small></div>
+            <button class="btn ghost sm" id="btnOpenPopup">打开浮窗</button>
+            <button class="btn ghost sm" id="btnOpenIndex">完整词典页</button>
+          </div>
+        </div>
+        <div class="card set-group">
+          <h3>数据与维护</h3>
+          <div class="desc">所有学习数据保存在本机 .data 目录，不上传任何服务器</div>
+          <div class="set-row">
+            <div class="label"><b>查询缓存</b><small id="cacheInfo">读取中…</small></div>
+            <button class="btn ghost sm" id="btnClearCache">清空缓存</button>
+          </div>
+          <div class="set-row">
+            <div class="label"><b>本地服务</b><small id="svcInfo">读取中…</small></div>
+            <button class="btn ghost sm" id="btnPing">检测</button>
+          </div>
+        </div>
+        <div class="card set-group">
+          <h3>关于 WordLens</h3>
+          <div class="about-line"><span>版本</span><span>3.0 学习工作台（从零学英语）</span></div>
+          <div class="about-line"><span>词典数据</span><span>有道词典（柯林斯 / 牛津双语例句）</span></div>
+          <div class="about-line"><span>句子翻译</span><span>MyMemory · 中英双向</span></div>
+          <div class="about-line"><span>运行方式</span><span>本机 localhost:7788 · 离线数据存 .data</span></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<button id="selBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h12M9 3v2m-6 4h10M7 9v2m-2 4h12M11 15v2m-4 4h8"/><path d="M14 20l4-9 4 9m-7-3h6"/></svg>翻译选中文本</button>
+
+<script>
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtTime = ts => { const d = new Date(ts); return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); };
+
+const ICON = {
+  copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>',
+  sound:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+  trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2m-9 0l1 14h8l1-14"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
+  book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="7"/><rect x="12" y="7" width="3" height="11"/><rect x="17" y="13" width="3" height="5"/></svg>',
+  fire:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2c1 5-3 6-3 10a3 3 0 0 0 6 0c0-1.5-.5-2.5-.5-2.5 2.5 1.5 4.5 4 4.5 7a7 7 0 0 1-14 0c0-4 3-7 7-14.5z"/></svg>',
+  empty:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/></svg>'
+};
+
+let S = { current:null, book:[], history:[], stats:null, hk:null, pendingHk:null,
+  flash:{ queue:[], idx:0, flipped:false } };
+
+async function api(p, opts){ const r = await fetch(p, opts); return await r.json(); }
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2200); }
+function shortDef(d){ if(!d) return ''; if(d.type==='sentence') return d.translation||''; const s=d.senses&&d.senses[0]; return s?(s.pos?s.pos+' ':'')+(s.defs||[]).join('；'):''; }
+
+/* ---------- 导航 ---------- */
+const TITLES = { translate:'翻译查词', book:'生词本', flash:'闪卡复习', history:'查询历史', stats:'学习统计', settings:'设置' };
+function go(view){
+  $$('.nav-item').forEach(b=>b.classList.toggle('active', b.dataset.view===view));
+  $$('.view').forEach(v=>v.classList.toggle('active', v.id==='v-'+view));
+  $('#viewTitle').textContent = TITLES[view];
+  $('#content').scrollTop = 0;
+  if(view==='book') loadBook();
+  if(view==='flash') startFlash();
+  if(view==='history') loadHistory();
+  if(view==='stats') loadStats();
+  if(view==='settings') loadSettings();
+}
+$('#nav').addEventListener('click', e=>{ const b=e.target.closest('.nav-item'); if(b) go(b.dataset.view); });
+
+/* ---------- 主题 ---------- */
+function setTheme(t){ document.documentElement.setAttribute('data-theme',t); localStorage.setItem('wl_theme',t); }
+setTheme(localStorage.getItem('wl_theme') || 'light');
+$('#btnTheme').onclick = $('#btnTheme2').onclick = ()=> setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');
+
+/* ---------- 翻译 ---------- */
+const CHIPS = ['artificial','resilient','meticulous','break down','人工智能正在改变世界','The report is due on Friday','谢谢你','make a difference'];
+$('#chips').innerHTML = CHIPS.map(c=>`<button class="chip">${esc(c)}</button>`).join('');
+$('#chips').onclick = e=>{ if(e.target.classList.contains('chip')){ const t=e.target.textContent; $('#mainQ').value=t; doTranslate(t); } };
+
+async function doTranslate(text){
+  text = String(text||'').trim();
+  if(!text) return;
+  $('#mainQ').value = text;
+  go('translate');
+  $('#result').innerHTML = '<div class="card loading"><span class="spinner"></span>正在查询…</div>';
+  try{
+    const d = await api('/api/translate?text='+encodeURIComponent(text));
+    S.current = d;
+    if(d.error) throw new Error(d.error);
+    renderResult(d);
+    document.querySelector('.hero').classList.add('compact');
+    $('#result').scrollIntoView({behavior:'smooth',block:'start'});
+    refreshBadges();
+  }catch(err){
+    $('#result').innerHTML = `<div class="card pad"><b style="color:var(--danger)">查询失败</b><div class="muted" style="margin-top:8px">${esc(err.message)}</div><div class="muted" style="margin-top:8px;font-size:12px">翻译功能需要联网；若是网络问题，可稍后重试或查看缓存内的历史查询。</div></div>`;
+  }
+}
+$('#btnGo').onclick = ()=>doTranslate($('#mainQ').value);
+$('#mainQ').onkeydown = e=>{ if(e.key==='Enter') doTranslate(e.target.value); };
+$('#topQ').onkeydown = e=>{ if(e.key==='Enter'){ doTranslate(e.target.value); e.target.blur(); } };
+document.addEventListener('keydown', e=>{
+  if(e.ctrlKey && e.key.toLowerCase()==='k'){ e.preventDefault(); go('translate'); $('#mainQ').focus(); $('#mainQ').select(); }
+  if(e.key==='Escape'){ $('#selBtn').style.display='none'; }
+});
+
+function renderResult(d){
+  if(d.type==='sentence') return renderSentence(d);
+  const fav = S.book.some(x=>x.word===(d.word||''));
+  const phones = (d.ukphone||d.usphone) ? `<div class="phones">
+    ${d.ukphone?`<span class="phone-pill">英 /${esc(d.ukphone)}/ <button class="audio-btn" data-audio="${esc(d.ukSpeech)}" title="英音发音">${ICON.sound}</button></span>`:''}
+    ${d.usphone?`<span class="phone-pill">美 /${esc(d.usphone)}/ <button class="audio-btn" data-audio="${esc(d.usSpeech)}" title="美音发音">${ICON.sound}</button></span>`:''}
+  </div>` : '';
+  const senses = (d.senses||[]).length ? `<div class="card pad"><div class="section-title" style="margin-top:0">释义</div>${d.senses.map(s=>`<div class="sense"><div class="pos">${esc(s.pos)}</div><div class="defs">${(s.defs||[]).map((x,i)=>`<div class="def-line"><i>${i+1}.</i><span>${esc(x)}</span></div>`).join('')}</div></div>`).join('')}</div>` : '';
+  const examples = (d.examples||[]).length ? `<div class="card pad"><div class="section-title" style="margin-top:0">双语例句 <span class="muted" style="font-weight:400">${d.examples.length} 条</span></div>${d.examples.map(x=>`<div class="ex"><div class="en">${esc(x.en)}</div><div class="zh">${esc(x.zh)}</div></div>`).join('')}</div>` : '';
+  const phrases = (d.phrases||[]).length ? `<div class="card pad"><div class="section-title" style="margin-top:0">短语搭配</div><div class="pill-list">${d.phrases.map(x=>`<div class="pill"><b>${esc(x.en)}</b><span>${esc(x.zh)}</span></div>`).join('')}</div></div>` : '';
+  const rel = (d.synonyms||[]).concat(d.derivatives||[]);
+  const relHtml = rel.length ? `<div class="card pad"><div class="section-title" style="margin-top:0">同义词 / 派生词</div><div class="pill-list">${rel.map(x=>`<div class="pill"><b>${esc(x.w)}</b><span>${esc(x.zh||x.pos||'')}</span></div>`).join('')}</div></div>` : '';
+  const forms = (d.wordforms||[]).length ? `<div class="card pad"><div class="section-title" style="margin-top:0">词形变化</div><div class="pill-list">${d.wordforms.map(x=>`<div class="pill"><b>${esc(x.value)}</b><span>${esc(x.name||'')}</span></div>`).join('')}</div></div>` : '';
+  $('#result').innerHTML = `
+    <div class="card pad">
+      <div class="word-head">
+        <div><div class="word-title">${esc(d.word)}</div>${phones}</div>
+        <div class="head-actions">
+          <button class="btn ghost sm" id="actFav">${ICON.star}${fav?'已收藏':'加入生词本'}</button>
+          <button class="btn ghost sm" id="actCopy">${ICON.copy}复制词条</button>
+        </div>
+      </div>
+      ${d._offline?'<div class="muted" style="margin-top:12px;font-size:12px">离线示例词条（网络不可用）</div>':''}
+    </div>
+    <div class="grid-2" style="margin-top:16px">${senses}${examples}</div>
+    <div class="grid-2" style="margin-top:16px">${phrases}${relHtml}</div>
+    ${forms?`<div style="margin-top:16px">${forms}</div>`:''}
+    <div class="muted" style="text-align:center;margin-top:18px;font-size:11px">数据来源：${esc(d.source||'有道词典')}</div>`;
+  $('#actFav').onclick = ()=>addFav(d);
+  $('#actCopy').onclick = ()=>{ copyText(JSON.stringify({word:d.word,phones:[d.ukphone,d.usphone],senses:d.senses,examples:d.examples},null,2)); };
+  $$('[data-audio]').forEach(b=>b.onclick=e=>{ e.stopPropagation(); if(b.dataset.audio) new Audio(b.dataset.audio).play().catch(()=>toast('发音需要联网')); });
+}
+function renderSentence(d){
+  const zh2en = d.dir==='zh2en';
+  const fav = S.book.some(x=>x.word===d.text);
+  $('#result').innerHTML = `<div class="card sentence-card">
+    <div class="muted" style="font-size:12px">${zh2en?'中译英':'英译中'} · 整句翻译</div>
+    <div class="trans" style="margin-top:16px;font-size:${zh2en?'27px':'30px'}">${esc(d.translation)}</div>
+    <div class="src">${esc(d.text)}</div>
+    <div class="meta">${esc(d.source||'MyMemory')}${d.quality?' · 匹配度 '+Math.round(d.quality*100)+'%':''}</div>
+    <div class="acts">
+      <button class="btn sm" id="actCopy">${ICON.copy}复制译文</button>
+      <button class="btn ghost sm" id="actFav">${ICON.star}${fav?'已收藏':'加入生词本'}</button>
+    </div>
+  </div>`;
+  $('#actCopy').onclick = ()=>copyText(d.translation);
+  $('#actFav').onclick = ()=>addFav(d);
+}
+function copyText(t){ navigator.clipboard.writeText(t).then(()=>toast('已复制到剪贴板')).catch(()=>toast('复制失败')); }
+async function addFav(d){
+  const word = d.type==='sentence' ? d.text : d.word;
+  const r = await api('/api/wordbook',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({word,type:d.type,def:shortDef(d)})});
+  if(r.duplicate){ toast('已在生词本中'); return; }
+  toast('已加入生词本');
+  await loadBook();
+  if(S.current) renderResult(S.current);
+}
+
+/* ---------- 生词本 ---------- */
+async function loadBook(){
+  const r = await api('/api/wordbook'); S.book = r.items||[];
+  $('#bookBadge').textContent = S.book.length;
+  $('#bookBadge').style.display = S.book.length?'flex':'none';
+  renderBook();
+}
+function renderBook(){
+  const q = ($('#bookFilter').value||'').toLowerCase();
+  const items = S.book.filter(x=>x.word.toLowerCase().includes(q)||(x.def||'').toLowerCase().includes(q));
+  if(!items.length){
+    $('#bookList').innerHTML = `<div class="card empty">${ICON.empty}<div>${S.book.length?'没有匹配的生词':'还没有收藏生词'}</div><div style="font-size:12px;margin-top:8px">在翻译结果里点「加入生词本」即可收藏，之后可用闪卡复习</div></div>`;
+    return;
+  }
+  $('#bookList').innerHTML = items.map(x=>`<div class="card book-item">
+    <div class="w">${esc(x.word)}</div>
+    <div class="d">${esc(x.def||'—')}</div>
+    <span class="lv ${'l'+Math.min(x.level||0,1)}">Lv.${x.level||0} · ${x.reviewCount||0}次</span>
+    <button class="row-btn" data-q="${esc(x.word)}" title="重新查询">${ICON.search}</button>
+    <button class="row-btn del" data-del="${esc(x.id)}" title="删除">${ICON.trash}</button>
+  </div>`).join('');
+  $$('#bookList [data-q]').forEach(b=>b.onclick=()=>doTranslate(b.dataset.q));
+  $$('#bookList [data-del]').forEach(b=>b.onclick=async()=>{ await api('/api/wordbook?id='+encodeURIComponent(b.dataset.del),{method:'DELETE'}); toast('已删除'); loadBook(); });
+}
+$('#bookFilter').oninput = renderBook;
+$('#btnToFlash').onclick = ()=>go('flash');
+$('#btnClearBook').onclick = async()=>{ if(!confirm('确定清空整个生词本？此操作不可恢复。')) return; await api('/api/wordbook?all=1',{method:'DELETE'}); toast('生词本已清空'); loadBook(); };
+$('#btnExport').onclick = ()=>{
+  if(!S.book.length){ toast('生词本为空'); return; }
+  const rows = [['单词/句子','释义','熟练度','复习次数','加入时间']].concat(S.book.map(x=>[x.word,x.def,'Lv.'+(x.level||0),x.reviewCount||0,new Date(x.addedAt).toLocaleString('zh-CN')]));
+  const csv = '\uFEFF'+rows.map(r=>r.map(c=>'"'+String(c==null?'':c).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='WordLens_生词本_'+new Date().toISOString().slice(0,10)+'.csv'; a.click(); URL.revokeObjectURL(a.href);
+  toast('已导出 CSV');
+};
+
+/* ---------- 闪卡复习 ---------- */
+async function startFlash(){
+  await loadBook();
+  const now = Date.now();
+  S.flash.queue = S.book.filter(x=>!x.nextReview || x.nextReview<=now);
+  S.flash.idx = 0; S.flash.flipped = false;
+  renderFlash();
+}
+function renderFlash(){
+  const f=S.flash, wrap=$('#flashWrap');
+  if(!f.queue.length){
+    wrap.innerHTML = `<div class="card empty" style="padding:60px 30px">${ICON.book}<div>暂时没有待复习的生词</div><div style="font-size:12px;margin-top:8px">收藏过的词会按 1/2/4/7/15/30 天间隔安排复习，全部记完时这里就是空的</div><button class="btn sm" style="margin-top:18px" id="flashAll">强制复习全部</button></div>`;
+    const b=$('#flashAll'); if(b) b.onclick=()=>{ f.queue=S.book.slice(); f.idx=0; f.flipped=false; renderFlash(); };
+    return;
+  }
+  const it=f.queue[f.idx];
+  wrap.innerHTML = `
+    <div class="flash-progress"><span class="muted" style="font-size:12px">${f.idx+1} / ${f.queue.length}</span><div class="bar"><i style="width:${(f.idx/f.queue.length*100).toFixed(1)}%"></i></div><span class="muted" style="font-size:12px">待复习 ${f.queue.length}</span></div>
+    <div class="flash-card" id="fcard">
+      <div class="fw">${esc(it.word)}</div>
+      ${f.flipped?`<div class="fd">${esc(it.def||'（暂无释义）')}</div>`:`<div class="hint">点击卡片显示释义</div>`}
+    </div>
+    <div class="flash-acts">
+      <button class="btn ghost" id="fNo" ${f.flipped?'':'disabled'}>还不认识</button>
+      <button class="btn" id="fFlip">${f.flipped?'下一张':'显示答案'}</button>
+      <button class="btn ghost" id="fYes" ${f.flipped?'':'disabled'}>认识</button>
+    </div>`;
+  $('#fcard').onclick = ()=>{ if(!f.flipped){ f.flipped=true; renderFlash(); } };
+  $('#fFlip').onclick = ()=>{ if(!f.flipped){ f.flipped=true; renderFlash(); } else { f.idx++; f.flipped=false; if(f.idx>=f.queue.length){ renderDone(); } else renderFlash(); } };
+  const grade = known => async()=>{
+    await api('/api/wordbook/review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:it.id,known})});
+    toast(known?'记住了，下次间隔更长':'没关系，稍后再见');
+    f.idx++; f.flipped=false;
+    if(f.idx>=f.queue.length) renderDone(); else renderFlash();
+    loadBook();
+  };
+  $('#fYes').onclick = grade(true); $('#fNo').onclick = grade(false);
+}
+function renderDone(){
+  $('#flashWrap').innerHTML = `<div class="card empty" style="padding:60px 30px">${ICON.fire}<div style="font-size:18px;font-weight:700;color:var(--text)">本轮复习完成！</div><div style="font-size:12px;margin-top:10px">生词已按熟练度安排下一次复习时间</div><button class="btn sm" style="margin-top:18px" id="flashAgain">再来一轮</button></div>`;
+  $('#flashAgain').onclick = startFlash;
+}
+
+/* ---------- 历史 ---------- */
+async function loadHistory(){
+  const r=await api('/api/history'); S.history=r.items||[];
+  $('#histCount').textContent = '共 '+S.history.length+' 条查询记录';
+  $('#histList').innerHTML = S.history.length ? S.history.map(x=>`<div class="hist-item" data-q="${esc(x.text)}">
+    <span class="tag">${x.type==='word'?'单词':'句子'}</span><div class="t">${esc(x.text)}</div><span class="time">${fmtTime(x.ts)}</span>
+    <button class="row-btn del" data-del="${esc(x.id)}" title="删除">${ICON.trash}</button>
+  </div>`).join('') : `<div class="empty">${ICON.clock}<div>还没有查询记录</div></div>`;
+  $$('#histList .hist-item').forEach(el=>el.onclick=e=>{ if(e.target.closest('[data-del]')) return; doTranslate(el.dataset.q); });
+  $$('#histList [data-del]').forEach(b=>b.onclick=async e=>{ e.stopPropagation(); await api('/api/history?id='+encodeURIComponent(b.dataset.del),{method:'DELETE'}); loadHistory(); });
+}
+$('#btnClearHist').onclick = async()=>{ if(!confirm('确定清空全部查询历史？')) return; await api('/api/history?all=1',{method:'DELETE'}); toast('历史已清空'); loadHistory(); };
+
+/* ---------- 统计 ---------- */
+async function loadStats(){
+  const s=await api('/api/stats'); S.stats=s;
+  const cards=[
+    {n:s.total,l:'累计查询',i:ICON.chart},
+    {n:s.days[s.days.length-1].count,l:'今日查询',i:ICON.clock},
+    {n:s.favorites,l:'生词收藏',i:ICON.book},
+    {n:s.streak,l:'连续学习（天）',i:ICON.fire}
+  ];
+  $('#statGrid').innerHTML = cards.map(c=>`<div class="card stat"><div class="ic">${c.i}</div><div class="n">${c.n}</div><div class="l">${c.l}</div></div>`).join('');
+  const max=Math.max(1,...s.days.map(d=>d.count));
+  $('#bars').innerHTML = s.days.map(d=>`<div class="bar-col" title="${d.date}: ${d.count} 次"><i style="height:${Math.max(3,d.count/max*100)}%"></i><span>${d.label}</span></div>`).join('');
+  $('#distWord').textContent = s.words+' 次'; $('#distSent').textContent = s.sentences+' 次'; $('#distFav').textContent = s.favorites+' 个';
+}
+
+/* ---------- 设置 ---------- */
+async function loadSettings(){
+  const h=await api('/api/hotkey'); S.hk=h.config;
+  $('#hkCurrent').textContent = (h.configured?'已配置：':'默认：')+h.config.name;
+  $('#hkBox').textContent = h.config.name;
+  const st=await api('/api/stats'); $('#cacheInfo').textContent = st.cacheCount+' 个缓存文件（1 天有效）';
+  pingService();
+}
+const VK_MAP = (()=>{ const m={}; for(let i=0;i<26;i++) m['Key'+String.fromCharCode(65+i)]=65+i; for(let i=0;i<10;i++) m['Digit'+i]=48+i; for(let i=1;i<=13;i++) m['F'+i]=111+i; Object.assign(m,{ArrowLeft:37,ArrowUp:38,ArrowRight:39,ArrowDown:40,Home:36,End:35,PageUp:33,PageDown:34,Insert:45,Delete:46,Space:32,Tab:9,Backquote:192,Minus:189,Equal:187,BracketLeft:219,BracketRight:221,Semicolon:186,Quote:222,Comma:188,Period:190,Slash:191,Backslash:220}); return m; })();
+$('#hkBox').onfocus = ()=>{ $('#hkBox').classList.add('capturing'); $('#hkBox').textContent='请按下组合键…'; };
+$('#hkBox').addEventListener('keydown', e=>{
+  e.preventDefault(); e.stopPropagation();
+  let mod=0;
+  if(e.ctrlKey) mod|=2; if(e.altKey) mod|=1; if(e.shiftKey) mod|=4; if(e.metaKey) mod|=8;
+  const vk=VK_MAP[e.code];
+  if(!vk || mod===0){ $('#hkBox').textContent='需含 Ctrl/Alt/Shift/Win + 一个按键'; return; }
+  const names=[]; if(e.ctrlKey)names.push('Ctrl'); if(e.altKey)names.push('Alt'); if(e.shiftKey)names.push('Shift'); if(e.metaKey)names.push('Win');
+  const key = e.code.startsWith('Key')?e.code.slice(3):e.code.startsWith('Digit')?e.code.slice(5):e.code.replace('Arrow','').replace('Key','');
+  names.push(key);
+  S.pendingHk={mod,vk,name:names.join('+')};
+  $('#hkBox').textContent=S.pendingHk.name;
+  $('#hkSave').disabled=false;
+});
+$('#hkSave').onclick = async()=>{
+  if(!S.pendingHk){ toast('请先按下组合键'); return; }
+  const r=await api('/api/hotkey',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(S.pendingHk)});
+  if(r.ok){ toast('热键已保存，重启托盘后生效'); $('#hkCurrent').textContent='已配置：'+r.config.name; $('#hkSave').disabled=true; S.pendingHk=null; $('#hkBox').blur(); $('#hkBox').classList.remove('capturing'); }
+  else toast('保存失败：'+(r.error||''));
+};
+$('#btnRestartHint').onclick = ()=>alert('热键由后台托盘程序注册。保存配置后，请：\n1) 右键任务栏 WordLens 图标 → 退出 WordLens\n2) 重新双击「启动热键翻译.bat」\n新热键即生效。（也可用托盘菜单里的「更改唤起热键…」）');
+$('#btnOpenPopup').onclick = $('#btnPopup').onclick = ()=>window.open('/popup.html','WordLens 翻译','width=560,height=720');
+$('#btnOpenIndex').onclick = ()=>window.open('/index.html','WordLens 完整词典','width=900,height=760');
+$('#btnClearCache').onclick = async()=>{ const r=await api('/api/cache',{method:'DELETE'}); toast('已清空 '+r.cleared+' 个缓存'); loadSettings(); };
+$('#btnPing').onclick = pingService;
+async function pingService(){
+  try{ const r=await api('/api/ping'); $('#svcInfo').textContent='运行中 · localhost:'+r.port; }
+  catch(_){ $('#svcInfo').textContent='未连接'; }
+}
+
+/* ---------- 剪贴板 / 划词 / 状态 ---------- */
+async function fromClipboard(){
+  try{ const t=await navigator.clipboard.readText(); if(t.trim()) doTranslate(t.trim()); else toast('剪贴板为空'); }
+  catch(_){ toast('无法读取剪贴板，请用 Ctrl+V 粘贴到搜索框'); }
+}
+$('#btnClip').onclick = $('#btnClip2').onclick = fromClipboard;
+document.addEventListener('mouseup', e=>{
+  if(e.target.closest('#selBtn')) return;
+  const sel=window.getSelection(); const t=sel?sel.toString().trim():'';
+  if(t && t.length<=200){ const b=$('#selBtn'); b.style.display='flex'; b.style.left=Math.min(e.clientX+8,window.innerWidth-160)+'px'; b.style.top=(e.clientY+10)+'px'; b.dataset.text=t; }
+  else $('#selBtn').style.display='none';
+});
+$('#selBtn').onclick = e=>{ e.preventDefault(); doTranslate($('#selBtn').dataset.text); $('#selBtn').style.display='none'; window.getSelection().removeAllRanges(); };
+async function refreshBadges(){
+  const s=await api('/api/stats');
+  const b=$('#dueBadge'); b.textContent=s.due; b.style.display=s.due?'flex':'none';
+  $('#bookBadge').textContent=s.favorites; $('#bookBadge').style.display=s.favorites?'flex':'none';
+}
+async function health(){
+  try{ await api('/api/ping'); $('#statusDot').classList.remove('off'); $('#statusText').textContent='本地服务运行正常'; }
+  catch(_){ $('#statusDot').classList.add('off'); $('#statusText').textContent='服务未启动'; }
+}
+health(); setInterval(health,30000);
+loadBook().then(refreshBadges);
+$('#mainQ').focus();
+// 支持 ?q=word 直接查询、?view=stats 直接打开指定页，便于外部程序 / 快捷方式唤起
+const _params = new URLSearchParams(location.search);
+const initView = _params.get('view');
+if(initView && TITLES[initView]) go(initView);
+const initQ = _params.get('q');
+if(initQ) doTranslate(initQ);
+</script>
+<script src="/learn.js"></script>
+</body>
+</html>

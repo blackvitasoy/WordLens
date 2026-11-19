@@ -1,0 +1,532 @@
+{
+  "levels": [
+    {
+      "id": "L0", "name": "第 0 关 · 发音入门", "desc": "48 个国际音标，掌握看词能读的拼读技巧", "color": "#f59e0b",
+      "units": [
+        {
+          "id": "L0U1", "title": "单元音 · 短元音", "type": "phonetic", "desc": "7 个短元音，短促干脆",
+          "items": [
+            { "ipa": "ɪ", "zh": "短衣音", "tip": "比中文\"衣\"更短更松，嘴角微咧", "words": [{ "w": "sit", "zh": "坐" }, { "w": "big", "zh": "大的" }] },
+            { "ipa": "e", "zh": "短诶音", "tip": "舌尖抵下齿，嘴半开，像快速说\"诶\"", "words": [{ "w": "bed", "zh": "床" }, { "w": "pen", "zh": "钢笔" }] },
+            { "ipa": "æ", "zh": "大嘴哎音", "tip": "嘴张大，下巴下拉，比 e 更开，美式经典音", "words": [{ "w": "cat", "zh": "猫" }, { "w": "apple", "zh": "苹果" }] },
+            { "ipa": "ɒ", "zh": "短噢音", "tip": "嘴拢圆，短促发音，英式口音明显", "words": [{ "w": "dog", "zh": "狗" }, { "w": "box", "zh": "盒子" }] },
+            { "ipa": "ʌ", "zh": "短阿音", "tip": "嘴自然半开，像被轻拍肚子发出的\"阿\"", "words": [{ "w": "cup", "zh": "杯子" }, { "w": "bus", "zh": "公交车" }] },
+            { "ipa": "ʊ", "zh": "短乌音", "tip": "双唇微圆，短而松，不要拖成\"乌\"", "words": [{ "w": "book", "zh": "书" }, { "w": "good", "zh": "好的" }] },
+            { "ipa": "ə", "zh": "中央弱音", "tip": "最懒的音：舌身平放中央，轻而短，多出现在非重读音节", "words": [{ "w": "about", "zh": "关于" }, { "w": "teacher", "zh": "老师" }] }
+          ]
+        },
+        {
+          "id": "L0U2", "title": "单元音 · 长元音", "type": "phonetic", "desc": "5 个长元音，音要拖足",
+          "items": [
+            { "ipa": "iː", "zh": "长衣音", "tip": "嘴角用力咧开，音拖长一拍，像微笑着说\"衣——\"", "words": [{ "w": "see", "zh": "看见" }, { "w": "tea", "zh": "茶" }] },
+            { "ipa": "ɑː", "zh": "长啊音", "tip": "嘴张大，舌身放平后缩，音拖长", "words": [{ "w": "car", "zh": "汽车" }, { "w": "far", "zh": "远的" }] },
+            { "ipa": "ɔː", "zh": "长噢音", "tip": "双唇收圆前突，音拖长，像\"哦——\"", "words": [{ "w": "door", "zh": "门" }, { "w": "ball", "zh": "球" }] },
+            { "ipa": "uː", "zh": "长乌音", "tip": "双唇收小圆孔，音拖长，像\"乌——\"", "words": [{ "w": "food", "zh": "食物" }, { "w": "blue", "zh": "蓝色" }] },
+            { "ipa": "ɜː", "zh": "卷舌长音", "tip": "舌中部抬起，双唇微圆，英式经典长音", "words": [{ "w": "bird", "zh": "鸟" }, { "w": "word", "zh": "单词" }] }
+          ]
+        },
+        {
+          "id": "L0U3", "title": "双元音", "type": "phonetic", "desc": "8 个双元音，一气呵成的滑音",
+          "items": [
+            { "ipa": "eɪ", "zh": "诶衣滑音", "tip": "从 e 平滑滑向 ɪ，像\"诶→衣\"连读", "words": [{ "w": "day", "zh": "天" }, { "w": "name", "zh": "名字" }] },
+            { "ipa": "aɪ", "zh": "阿衣滑音", "tip": "从 a 滑向 ɪ，就是中文\"爱\"", "words": [{ "w": "time", "zh": "时间" }, { "w": "like", "zh": "喜欢" }] },
+            { "ipa": "ɔɪ", "zh": "噢衣滑音", "tip": "从 ɔ 滑向 ɪ，如\"哦一\"连读", "words": [{ "w": "boy", "zh": "男孩" }, { "w": "voice", "zh": "声音" }] },
+            { "ipa": "əʊ", "zh": "中央欧滑音", "tip": "从 ə 滑向 ʊ，嘴由松到圆，像\"欧\"", "words": [{ "w": "go", "zh": "去" }, { "w": "home", "zh": "家" }] },
+            { "ipa": "aʊ", "zh": "阿乌滑音", "tip": "从 a 滑向 ʊ，就是中文\"傲\"", "words": [{ "w": "now", "zh": "现在" }, { "w": "house", "zh": "房子" }] },
+            { "ipa": "ɪə", "zh": "衣儿滑音", "tip": "从 ɪ 滑向 ə，英式卷舌明显", "words": [{ "w": "here", "zh": "这里" }, { "w": "near", "zh": "近的" }] },
+            { "ipa": "eə", "zh": "诶儿滑音", "tip": "从 e 滑向 ə，如\"哎尔\"", "words": [{ "w": "hair", "zh": "头发" }, { "w": "where", "zh": "哪里" }] },
+            { "ipa": "ʊə", "zh": "乌儿滑音", "tip": "从 ʊ 滑向 ə，如\"乌尔\"", "words": [{ "w": "tour", "zh": "旅行" }, { "w": "sure", "zh": "确定的" }] }
+          ]
+        },
+        {
+          "id": "L0U4", "title": "辅音 · 爆破音", "type": "phonetic", "desc": "6 个爆破音，3 组清浊对，气从口中\"爆\"出",
+          "items": [
+            { "ipa": "p", "zh": "清爆破音 p", "tip": "双唇闭紧，气流冲开，声带不振动；放纸条会动", "words": [{ "w": "pen", "zh": "钢笔" }, { "w": "stop", "zh": "停止" }] },
+            { "ipa": "b", "zh": "浊爆破音 b", "tip": "与 p 口型相同，但声带振动，摸喉咙有震感", "words": [{ "w": "book", "zh": "书" }, { "w": "job", "zh": "工作" }] },
+            { "ipa": "t", "zh": "清爆破音 t", "tip": "舌尖抵上齿龈，气流弹出，声带不振动", "words": [{ "w": "tea", "zh": "茶" }, { "w": "cat", "zh": "猫" }] },
+            { "ipa": "d", "zh": "浊爆破音 d", "tip": "与 t 口型相同，声带振动", "words": [{ "w": "dog", "zh": "狗" }, { "w": "red", "zh": "红色" }] },
+            { "ipa": "k", "zh": "清爆破音 k", "tip": "舌根抵软腭，气流冲出，像轻轻咳嗽", "words": [{ "w": "key", "zh": "钥匙" }, { "w": "back", "zh": "后面" }] },
+            { "ipa": "ɡ", "zh": "浊爆破音 g", "tip": "与 k 口型相同，声带振动", "words": [{ "w": "go", "zh": "去" }, { "w": "big", "zh": "大的" }] }
+          ]
+        },
+        {
+          "id": "L0U5", "title": "辅音 · 摩擦音", "type": "phonetic", "desc": "10 个摩擦音，气流从缝隙挤出",
+          "items": [
+            { "ipa": "f", "zh": "清摩擦音 f", "tip": "上齿轻咬下唇，吹气，声带不振动", "words": [{ "w": "five", "zh": "五" }, { "w": "life", "zh": "生活" }] },
+            { "ipa": "v", "zh": "浊摩擦音 v", "tip": "同 f 口型，但声带振动；很多人口型错成\"乌\"", "words": [{ "w": "very", "zh": "非常" }, { "w": "love", "zh": "爱" }] },
+            { "ipa": "θ", "zh": "咬舌清音", "tip": "舌尖轻伸上下齿之间吹气，声带不振动；中文没有此音", "words": [{ "w": "think", "zh": "思考" }, { "w": "three", "zh": "三" }] },
+            { "ipa": "ð", "zh": "咬舌浊音", "tip": "同 θ 口型，声带振动，常见于 the/this/that", "words": [{ "w": "this", "zh": "这个" }, { "w": "mother", "zh": "母亲" }] },
+            { "ipa": "s", "zh": "清摩擦音 s", "tip": "舌尖近上齿龈，气流细缝挤出，像蛇\"嘶\"", "words": [{ "w": "sun", "zh": "太阳" }, { "w": "see", "zh": "看见" }] },
+            { "ipa": "z", "zh": "浊摩擦音 z", "tip": "同 s 口型，声带振动，像蚊子\"嗡\"", "words": [{ "w": "zoo", "zh": "动物园" }, { "w": "easy", "zh": "容易的" }] },
+            { "ipa": "ʃ", "zh": "清摩擦音 sh", "tip": "双唇微翘，舌抬向上齿龈后部，像中文\"嘘\"", "words": [{ "w": "she", "zh": "她" }, { "w": "fish", "zh": "鱼" }] },
+            { "ipa": "ʒ", "zh": "浊摩擦音", "tip": "同 ʃ 口型，声带振动，较少见，如 television", "words": [{ "w": "usually", "zh": "通常" }, { "w": "vision", "zh": "视力" }] },
+            { "ipa": "h", "zh": "轻哈气音", "tip": "像对着玻璃哈气，口型随后面元音变", "words": [{ "w": "he", "zh": "他" }, { "w": "hello", "zh": "你好" }] },
+            { "ipa": "r", "zh": "卷舌音", "tip": "舌尖卷起不碰任何地方，只从舌尖上方出气", "words": [{ "w": "red", "zh": "红色" }, { "w": "very", "zh": "非常" }] }
+          ]
+        },
+        {
+          "id": "L0U6", "title": "辅音 · 破擦音与其余", "type": "phonetic", "desc": "12 个收尾辅音：破擦、鼻音、边音、半元音",
+          "items": [
+            { "ipa": "tʃ", "zh": "清破擦音 ch", "tip": "t 和 ʃ 连读，像中文\"吃\"", "words": [{ "w": "chair", "zh": "椅子" }, { "w": "teacher", "zh": "老师" }] },
+            { "ipa": "dʒ", "zh": "浊破擦音", "tip": "d 和 ʒ 连读，像中文\"吉\"", "words": [{ "w": "job", "zh": "工作" }, { "w": "page", "zh": "页" }] },
+            { "ipa": "ts", "zh": "清破擦音 ts", "tip": "t 和 s 连读，像中文\"次\"", "words": [{ "w": "cats", "zh": "猫（复数）" }, { "w": "sits", "zh": "坐（三单）" }] },
+            { "ipa": "dz", "zh": "浊破擦音", "tip": "d 和 z 连读，像中文\"滋\"", "words": [{ "w": "beds", "zh": "床（复数）" }, { "w": "words", "zh": "单词（复数）" }] },
+            { "ipa": "tr", "zh": "清连缀 tr", "tip": "t 快速卷向 r，像\"缺\"但嘴更圆", "words": [{ "w": "tree", "zh": "树" }, { "w": "try", "zh": "尝试" }] },
+            { "ipa": "dr", "zh": "浊连缀 dr", "tip": "d 快速卷向 r，像\"捉\"", "words": [{ "w": "drink", "zh": "喝" }, { "w": "children", "zh": "孩子们" }] },
+            { "ipa": "m", "zh": "鼻音 m", "tip": "双唇闭合，气流从鼻腔出", "words": [{ "w": "man", "zh": "男人" }, { "w": "home", "zh": "家" }] },
+            { "ipa": "n", "zh": "鼻音 n", "tip": "舌尖抵上齿龈，气流从鼻腔出", "words": [{ "w": "name", "zh": "名字" }, { "w": "nine", "zh": "九" }] },
+            { "ipa": "ŋ", "zh": "后鼻音", "tip": "舌根抬起抵软腭，像中文\"嗯\"的后半", "words": [{ "w": "sing", "zh": "唱歌" }, { "w": "long", "zh": "长的" }] },
+            { "ipa": "l", "zh": "边音 l", "tip": "舌尖抵上齿龈，气流从舌两边出", "words": [{ "w": "like", "zh": "喜欢" }, { "w": "hello", "zh": "你好" }] },
+            { "ipa": "w", "zh": "半元音 w", "tip": "双唇收圆快速滑向后面元音，像\"乌\"起手", "words": [{ "w": "we", "zh": "我们" }, { "w": "work", "zh": "工作" }] },
+            { "ipa": "j", "zh": "半元音 y", "tip": "舌面抬向硬腭快速滑出，像\"衣\"起手", "words": [{ "w": "yes", "zh": "是的" }, { "w": "year", "zh": "年" }] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L1", "name": "第 1 关 · 零基础起步", "desc": "最常用的词与句型，能做简单自我介绍", "color": "#10b981",
+      "units": [
+        {
+          "id": "L1U1", "title": "打招呼", "type": "vocab",
+          "items": [
+            { "w": "hello", "phone": "həˈləʊ", "zh": "int. 你好", "ex": "Hello, nice to meet you.", "exZh": "你好，很高兴见到你。" },
+            { "w": "hi", "phone": "haɪ", "zh": "int. 嗨", "ex": "Hi! Long time no see.", "exZh": "嗨！好久不见。" },
+            { "w": "goodbye", "phone": "ˌɡʊdˈbaɪ", "zh": "int. 再见", "ex": "Goodbye, see you tomorrow.", "exZh": "再见，明天见。" },
+            { "w": "morning", "phone": "ˈmɔːnɪŋ", "zh": "n. 早晨", "ex": "Good morning, everyone.", "exZh": "大家早上好。" },
+            { "w": "night", "phone": "naɪt", "zh": "n. 夜晚", "ex": "Good night, sweet dreams.", "exZh": "晚安，好梦。" },
+            { "w": "please", "phone": "pliːz", "zh": "adv. 请", "ex": "Please sit down.", "exZh": "请坐。" },
+            { "w": "thanks", "phone": "θæŋks", "zh": "n. 感谢", "ex": "Thanks for your help.", "exZh": "谢谢你的帮助。" },
+            { "w": "sorry", "phone": "ˈsɒri", "zh": "adj. 抱歉的", "ex": "Sorry, I'm late.", "exZh": "对不起，我迟到了。" },
+            { "w": "welcome", "phone": "ˈwelkəm", "zh": "int. 欢迎", "ex": "Welcome to my home.", "exZh": "欢迎来我家。" },
+            { "w": "bye", "phone": "baɪ", "zh": "int. 再见", "ex": "Bye! Take care.", "exZh": "再见！保重。" }
+          ]
+        },
+        {
+          "id": "L1U2", "title": "数字与时间", "type": "vocab",
+          "items": [
+            { "w": "one", "phone": "wʌn", "zh": "num. 一", "ex": "I have one brother.", "exZh": "我有一个哥哥。" },
+            { "w": "two", "phone": "tuː", "zh": "num. 二", "ex": "Two cups of tea, please.", "exZh": "请来两杯茶。" },
+            { "w": "three", "phone": "θriː", "zh": "num. 三", "ex": "Three apples a day.", "exZh": "一天三个苹果。" },
+            { "w": "seven", "phone": "ˈsevn", "zh": "num. 七", "ex": "I get up at seven.", "exZh": "我七点起床。" },
+            { "w": "ten", "phone": "ten", "zh": "num. 十", "ex": "Wait ten minutes.", "exZh": "等十分钟。" },
+            { "w": "day", "phone": "deɪ", "zh": "n. 天", "ex": "Have a nice day!", "exZh": "祝你有美好的一天！" },
+            { "w": "week", "phone": "wiːk", "zh": "n. 周", "ex": "See you next week.", "exZh": "下周见。" },
+            { "w": "today", "phone": "təˈdeɪ", "zh": "adv. 今天", "ex": "Today is Monday.", "exZh": "今天是周一。" },
+            { "w": "tomorrow", "phone": "təˈmɒrəʊ", "zh": "adv. 明天", "ex": "I will call you tomorrow.", "exZh": "我明天给你打电话。" },
+            { "w": "time", "phone": "taɪm", "zh": "n. 时间", "ex": "What time is it now?", "exZh": "现在几点了？" }
+          ]
+        },
+        {
+          "id": "L1U3", "title": "be 动词与人称代词", "type": "grammar", "desc": "英语第一课：am / is / are 怎么选",
+          "cards": [
+            { "point": "I am / You are", "explain": "第一人称单数 I（我）搭配 am；第二人称 you（你）和所有复数搭配 are。", "examples": [{ "en": "I am a student.", "zh": "我是一名学生。" }, { "en": "You are my friend.", "zh": "你是我的朋友。" }] },
+            { "point": "He / She / It is", "explain": "第三人称单数（他/她/它）一律用 is。这是最容易考的点：见到 He、She、It 就选 is。", "examples": [{ "en": "He is my teacher.", "zh": "他是我的老师。" }, { "en": "She is from China.", "zh": "她来自中国。" }] },
+            { "point": "否定与疑问", "explain": "否定在 be 后加 not（is not → isn't）；疑问把 be 提到句首。", "examples": [{ "en": "I am not tired.", "zh": "我不累。" }, { "en": "Are you ready?", "zh": "你准备好了吗？" }] }
+          ],
+          "quiz": [
+            { "q": "She ___ a teacher.", "options": ["am", "is", "are", "be"], "a": 1, "why": "She 是第三人称单数，用 is。" },
+            { "q": "I ___ very happy today.", "options": ["is", "are", "am", "was"], "a": 2, "why": "第一人称 I 永远搭配 am。" },
+            { "q": "___ you from Beijing?", "options": ["Am", "Is", "Are", "Do"], "a": 2, "why": "you 搭配 are；疑问句把 are 提到句首。" },
+            { "q": "They ___ my classmates.", "options": ["is", "am", "are", "be"], "a": 2, "why": "They 是复数，用 are。" },
+            { "q": "It ___ seven o'clock.", "options": ["are", "is", "am", "has"], "a": 1, "why": "It 是第三人称单数，用 is。" }
+          ]
+        },
+        {
+          "id": "L1U4", "title": "家庭成员", "type": "vocab",
+          "items": [
+            { "w": "family", "phone": "ˈfæməli", "zh": "n. 家庭", "ex": "I love my family.", "exZh": "我爱我的家人。" },
+            { "w": "father", "phone": "ˈfɑːðə", "zh": "n. 父亲", "ex": "My father is a doctor.", "exZh": "我父亲是医生。" },
+            { "w": "mother", "phone": "ˈmʌðə", "zh": "n. 母亲", "ex": "Her mother cooks well.", "exZh": "她妈妈做饭很好吃。" },
+            { "w": "brother", "phone": "ˈbrʌðə", "zh": "n. 兄弟", "ex": "My brother likes football.", "exZh": "我哥哥喜欢足球。" },
+            { "w": "sister", "phone": "ˈsɪstə", "zh": "n. 姐妹", "ex": "His sister is two years old.", "exZh": "他妹妹两岁。" },
+            { "w": "son", "phone": "sʌn", "zh": "n. 儿子", "ex": "They have one son.", "exZh": "他们有一个儿子。" },
+            { "w": "daughter", "phone": "ˈdɔːtə", "zh": "n. 女儿", "ex": "Their daughter studies in London.", "exZh": "他们的女儿在伦敦读书。" },
+            { "w": "friend", "phone": "frend", "zh": "n. 朋友", "ex": "She is my best friend.", "exZh": "她是我最好的朋友。" },
+            { "w": "name", "phone": "neɪm", "zh": "n. 名字", "ex": "My name is Lin.", "exZh": "我的名字叫林。" },
+            { "w": "people", "phone": "ˈpiːpl", "zh": "n. 人们", "ex": "Many people live here.", "exZh": "很多人住在这里。" }
+          ]
+        },
+        {
+          "id": "L1U5", "title": "颜色与物品", "type": "vocab",
+          "items": [
+            { "w": "red", "phone": "red", "zh": "adj. 红色的", "ex": "The apple is red.", "exZh": "这个苹果是红的。" },
+            { "w": "blue", "phone": "bluː", "zh": "adj. 蓝色的", "ex": "The sky is blue today.", "exZh": "今天天空是蓝色的。" },
+            { "w": "green", "phone": "ɡriːn", "zh": "adj. 绿色的", "ex": "I like green tea.", "exZh": "我喜欢绿茶。" },
+            { "w": "black", "phone": "blæk", "zh": "adj. 黑色的", "ex": "He wears a black coat.", "exZh": "他穿着黑色外套。" },
+            { "w": "white", "phone": "waɪt", "zh": "adj. 白色的", "ex": "The walls are white.", "exZh": "墙是白色的。" },
+            { "w": "book", "phone": "bʊk", "zh": "n. 书", "ex": "This book is interesting.", "exZh": "这本书很有趣。" },
+            { "w": "pen", "phone": "pen", "zh": "n. 钢笔", "ex": "Can I use your pen?", "exZh": "我能用一下你的笔吗？" },
+            { "w": "desk", "phone": "desk", "zh": "n. 书桌", "ex": "My desk is near the window.", "exZh": "我的书桌靠窗。" },
+            { "w": "chair", "phone": "tʃeə", "zh": "n. 椅子", "ex": "Please take a chair.", "exZh": "请搬把椅子坐。" },
+            { "w": "phone", "phone": "fəʊn", "zh": "n. 电话", "ex": "My phone is new.", "exZh": "我的手机是新的。" }
+          ]
+        },
+        {
+          "id": "L1U6", "title": "常用动词", "type": "vocab",
+          "items": [
+            { "w": "go", "phone": "ɡəʊ", "zh": "v. 去", "ex": "I go to school by bus.", "exZh": "我坐公交上学。" },
+            { "w": "come", "phone": "kʌm", "zh": "v. 来", "ex": "Come here, please.", "exZh": "请过来。" },
+            { "w": "see", "phone": "siː", "zh": "v. 看见", "ex": "I see a bird.", "exZh": "我看见一只鸟。" },
+            { "w": "eat", "phone": "iːt", "zh": "v. 吃", "ex": "We eat lunch at noon.", "exZh": "我们中午吃午饭。" },
+            { "w": "drink", "phone": "drɪŋk", "zh": "v. 喝", "ex": "Drink more water.", "exZh": "多喝水。" },
+            { "w": "like", "phone": "laɪk", "zh": "v. 喜欢", "ex": "I like music.", "exZh": "我喜欢音乐。" },
+            { "w": "want", "phone": "wɒnt", "zh": "v. 想要", "ex": "I want a new phone.", "exZh": "我想要一部新手机。" },
+            { "w": "have", "phone": "hæv", "zh": "v. 有", "ex": "I have two cats.", "exZh": "我有两只猫。" },
+            { "w": "do", "phone": "duː", "zh": "v. 做", "ex": "What do you do?", "exZh": "你是做什么工作的？" },
+            { "w": "make", "phone": "meɪk", "zh": "v. 制作", "ex": "Let's make a cake.", "exZh": "我们做个蛋糕吧。" }
+          ]
+        },
+        {
+          "id": "L1U7", "title": "疑问句型", "type": "grammar", "desc": "What / Where / Who 怎么问问题",
+          "cards": [
+            { "point": "What is this?", "explain": "What 问\"什么\"。结构：What + is/are + 主语。回答直接给内容。", "examples": [{ "en": "What is your name?", "zh": "你叫什么名字？" }, { "en": "What are these?", "zh": "这些是什么？" }] },
+            { "point": "Where are you from?", "explain": "Where 问\"哪里\"。最常用的两个：Where are you from?（你来自哪）Where do you live?（你住在哪）。", "examples": [{ "en": "Where are you from?", "zh": "你来自哪里？" }, { "en": "Where is the bank?", "zh": "银行在哪里？" }] },
+            { "point": "Who is that?", "explain": "Who 问\"谁\"。Who + is + 人，回答用 He/She is …。", "examples": [{ "en": "Who is that man?", "zh": "那个男人是谁？" }, { "en": "Who is your English teacher?", "zh": "你的英语老师是谁？" }] }
+          ],
+          "quiz": [
+            { "q": "___ is your name? — My name is Li.", "options": ["Where", "What", "Who", "How"], "a": 1, "why": "问\"名字是什么\"用 What。" },
+            { "q": "___ are you from? — I'm from Shanghai.", "options": ["What", "Who", "Where", "When"], "a": 2, "why": "问\"来自哪里\"用 Where。" },
+            { "q": "___ is that woman? — She is my aunt.", "options": ["What", "Who", "Where", "Which"], "a": 1, "why": "问\"那个人是谁\"用 Who。" },
+            { "q": "What ___ this in English? — It's a key.", "options": ["am", "is", "are", "do"], "a": 1, "why": "this 是第三人称单数，用 is。" },
+            { "q": "Where ___ my glasses?", "options": ["is", "am", "are", "be"], "a": 2, "why": "glasses（眼镜）是复数，用 are。" }
+          ]
+        },
+        {
+          "id": "L1U8", "title": "情景对话 · 初次见面", "type": "dialog",
+          "lines": [
+            { "sp": "Anna", "en": "Hi! I'm Anna. What's your name?", "zh": "嗨！我是安娜。你叫什么名字？" },
+            { "sp": "Lin", "en": "Hello, Anna. My name is Lin.", "zh": "你好，安娜。我的名字叫林。" },
+            { "sp": "Anna", "en": "Nice to meet you, Lin. Where are you from?", "zh": "很高兴认识你，林。你来自哪里？" },
+            { "sp": "Lin", "en": "I'm from China. And you?", "zh": "我来自中国。你呢？" },
+            { "sp": "Anna", "en": "I'm from Canada. What do you do?", "zh": "我来自加拿大。你是做什么的？" },
+            { "sp": "Lin", "en": "I'm a teacher. I teach math.", "zh": "我是一名老师，教数学。" },
+            { "sp": "Anna", "en": "Great! Nice talking to you.", "zh": "太好了！很高兴和你聊天。" },
+            { "sp": "Lin", "en": "Me too. See you later!", "zh": "我也是。回头见！" }
+          ],
+          "quiz": [
+            { "q": "问对方名字，Anna 说的是：", "options": ["Where are you from?", "What's your name?", "What do you do?", "Who is that?"], "a": 1, "why": "\"What's your name?\" 用于问名字。" },
+            { "q": "\"Nice to meet you\" 的意思是：", "options": ["再见", "很高兴认识你", "谢谢你", "对不起"], "a": 1, "why": "初次见面礼貌用语。" },
+            { "q": "Lin 是做什么的？", "options": ["A doctor.", "A math teacher.", "A student.", "A driver."], "a": 1, "why": "Lin 说 I'm a teacher. I teach math。" },
+            { "q": "\"See you later\" 的意思是：", "options": ["稍后见", "很久以后", "现在见", "再见（正式）"], "a": 0, "why": "lately 常见告别语，\"回头见\"。" }
+          ]
+        },
+        {
+          "id": "L1U9", "title": "写作 · 自我介绍", "type": "writing",
+          "patterns": [
+            { "zh": "我叫……，来自……", "en": "My name is ___, and I am from ___." },
+            { "zh": "我是……（职业）", "en": "I am a / an ___." },
+            { "zh": "我喜欢……和……", "en": "I like ___ and ___." },
+            { "zh": "我想学好英语，因为……", "en": "I want to learn English well, because ___." }
+          ],
+          "example": { "en": "My name is Lin, and I am from China. I am an engineer. I like music and basketball. I want to learn English well, because I need it for my job.", "zh": "我叫林，来自中国。我是一名工程师。我喜欢音乐和篮球。我想学好英语，因为工作需要。" },
+          "tip": "写 3～5 句即可。先套句型，再替换自己的信息。写完对照示例朗读一遍，检查 am/is/are 用对了没有。"
+        },
+        {
+          "id": "L1U10", "title": "综合复习", "type": "review", "desc": "从已学词汇自动抽题，全面检验第 1 关"
+        }
+      ]
+    },
+    {
+      "id": "L2", "name": "第 2 关 · 日常场景", "desc": "吃穿住行全覆盖，能应对日常对话", "color": "#3b82f6",
+      "units": [
+        {
+          "id": "L2U1", "title": "一般现在时", "type": "grammar", "desc": "描述习惯与事实的第一时态",
+          "cards": [
+            { "point": "三单变化", "explain": "主语是 He/She/It 时，动词加 s 或 es（like→likes, go→goes, watch→watches）。口诀：三单动词加 s。", "examples": [{ "en": "She likes coffee.", "zh": "她喜欢咖啡。" }, { "en": "He goes to work at eight.", "zh": "他八点上班。" }] },
+            { "point": "否定用 don't/doesn't", "explain": "I/You/We/They + don't + 动词原形；He/She/It + doesn't + 动词原形（动词还原！）。", "examples": [{ "en": "I don't drink tea.", "zh": "我不喝茶。" }, { "en": "He doesn't eat meat.", "zh": "他不吃肉。" }] },
+            { "point": "疑问用 Do/Does", "explain": "Do + you/we/they + 动词原形？ Does + he/she/it + 动词原形？", "examples": [{ "en": "Do you play games?", "zh": "你玩游戏吗？" }, { "en": "Does she work here?", "zh": "她在这里工作吗？" }] }
+          ],
+          "quiz": [
+            { "q": "He ___ football every weekend.", "options": ["play", "plays", "playing", "played"], "a": 1, "why": "He 是三单，动词加 s。" },
+            { "q": "She doesn't ___ coffee.", "options": ["likes", "like", "liking", "liked"], "a": 1, "why": "doesn't 后面用动词原形。" },
+            { "q": "___ your sister work in a hospital?", "options": ["Do", "Is", "Does", "Are"], "a": 2, "why": "your sister 是三单，用 Does。" },
+            { "q": "I usually ___ up at seven.", "options": ["get", "gets", "getting", "got"], "a": 0, "why": "主语 I 不是三单，动词用原形。" },
+            { "q": "My parents ___ TV in the evening.", "options": ["watches", "watch", "watching", "is watch"], "a": 1, "why": "parents 是复数，动词用原形。" }
+          ]
+        },
+        {
+          "id": "L2U2", "title": "一天的活动", "type": "vocab",
+          "items": [
+            { "w": "get up", "phone": "ɡet ʌp", "zh": "起床", "ex": "I get up at six thirty.", "exZh": "我六点半起床。" },
+            { "w": "breakfast", "phone": "ˈbrekfəst", "zh": "n. 早餐", "ex": "Breakfast is ready.", "exZh": "早餐好了。" },
+            { "w": "lunch", "phone": "lʌntʃ", "zh": "n. 午餐", "ex": "Let's have lunch together.", "exZh": "我们一起吃午饭吧。" },
+            { "w": "dinner", "phone": "ˈdɪnə", "zh": "n. 晚餐", "ex": "We have dinner at home.", "exZh": "我们在家吃晚饭。" },
+            { "w": "work", "phone": "wɜːk", "zh": "v./n. 工作", "ex": "I work from nine to five.", "exZh": "我朝九晚五地工作。" },
+            { "w": "study", "phone": "ˈstʌdi", "zh": "v. 学习", "ex": "She studies English every day.", "exZh": "她每天学英语。" },
+            { "w": "sleep", "phone": "sliːp", "zh": "v. 睡觉", "ex": "I sleep eight hours a night.", "exZh": "我每晚睡八小时。" },
+            { "w": "play", "phone": "pleɪ", "zh": "v. 玩；播放", "ex": "The kids play in the park.", "exZh": "孩子们在公园玩。" },
+            { "w": "watch", "phone": "wɒtʃ", "zh": "v. 观看", "ex": "We watch movies on Friday.", "exZh": "我们周五看电影。" },
+            { "w": "walk", "phone": "wɔːk", "zh": "v. 走路", "ex": "I walk to the station.", "exZh": "我走路去车站。" }
+          ]
+        },
+        {
+          "id": "L2U3", "title": "情态动词 can", "type": "grammar", "desc": "表达能力与请求，人人爱用的 can",
+          "cards": [
+            { "point": "can + 动词原形", "explain": "can 表示\"会、能\"，后面永远接动词原形，没有人称变化（不说 cans）。", "examples": [{ "en": "I can swim.", "zh": "我会游泳。" }, { "en": "She can drive.", "zh": "她会开车。" }] },
+            { "point": "否定 can't", "explain": "can not → can't。表示\"不会/不能\"。", "examples": [{ "en": "I can't speak French.", "zh": "我不会说法语。" }] },
+            { "point": "礼貌请求 Can you…?", "explain": "Can you + 动词原形 + 其他？日常请求万能句。", "examples": [{ "en": "Can you help me?", "zh": "你能帮我吗？" }, { "en": "Can you say it again?", "zh": "你能再说一遍吗？" }] }
+          ],
+          "quiz": [
+            { "q": "He ___ speak three languages.", "options": ["cans", "can to", "can", "can speaks"], "a": 2, "why": "can 后接动词原形，且无三单变化。" },
+            { "q": "I ___ swim, but I ___ dive.", "options": ["can, can't", "can't, can", "am, am not", "do, don't"], "a": 0, "why": "前肯后否：会游泳但不会跳水。" },
+            { "q": "___ you open the window, please?", "options": ["Do", "Are", "Can", "Must"], "a": 2, "why": "Can you…? 是礼貌请求。" },
+            { "q": "My grandma ___ use a smartphone now.", "options": ["can", "cans", "can to", "is can"], "a": 0, "why": "can 不随人称变化。" }
+          ]
+        },
+        {
+          "id": "L2U4", "title": "食物与饮料", "type": "vocab",
+          "items": [
+            { "w": "rice", "phone": "raɪs", "zh": "n. 米饭", "ex": "Would you like some rice?", "exZh": "要来点米饭吗？" },
+            { "w": "bread", "phone": "bred", "zh": "n. 面包", "ex": "I buy bread every morning.", "exZh": "我每天早上买面包。" },
+            { "w": "chicken", "phone": "ˈtʃɪkɪn", "zh": "n. 鸡肉", "ex": "The chicken tastes great.", "exZh": "这鸡肉很好吃。" },
+            { "w": "fish", "phone": "fɪʃ", "zh": "n. 鱼", "ex": "We eat fish twice a week.", "exZh": "我们每周吃两次鱼。" },
+            { "w": "vegetable", "phone": "ˈvedʒtəbl", "zh": "n. 蔬菜", "ex": "Eat more vegetables.", "exZh": "多吃蔬菜。" },
+            { "w": "fruit", "phone": "fruːt", "zh": "n. 水果", "ex": "Apples are my favorite fruit.", "exZh": "苹果是我最喜欢的水果。" },
+            { "w": "water", "phone": "ˈwɔːtə", "zh": "n. 水", "ex": "A glass of water, please.", "exZh": "请来一杯水。" },
+            { "w": "milk", "phone": "mɪlk", "zh": "n. 牛奶", "ex": "I drink milk before bed.", "exZh": "我睡前喝牛奶。" },
+            { "w": "coffee", "phone": "ˈkɒfi", "zh": "n. 咖啡", "ex": "Coffee keeps me awake.", "exZh": "咖啡让我保持清醒。" },
+            { "w": "delicious", "phone": "dɪˈlɪʃəs", "zh": "adj. 美味的", "ex": "This soup is delicious!", "exZh": "这汤太好喝了！" }
+          ]
+        },
+        {
+          "id": "L2U5", "title": "情景对话 · 餐厅点餐", "type": "dialog",
+          "lines": [
+            { "sp": "服务员", "en": "Good evening! A table for two?", "zh": "晚上好！两位吗？" },
+            { "sp": "顾客", "en": "Yes, please. By the window, if possible.", "zh": "好的。如果可以的话，靠窗的位子。" },
+            { "sp": "服务员", "en": "Sure. Here are the menus. Can I get you something to drink first?", "zh": "没问题。这是菜单。先来点什么喝的吗？" },
+            { "sp": "顾客", "en": "Two glasses of water, please. And could we order now?", "zh": "请先来两杯水。我们现在可以点餐吗？" },
+            { "sp": "服务员", "en": "Of course. What would you like?", "zh": "当然可以。您想吃点什么？" },
+            { "sp": "顾客", "en": "I'll have the chicken with rice, and a vegetable soup.", "zh": "我要鸡肉配米饭，再来一份蔬菜汤。" },
+            { "sp": "服务员", "en": "Great choice. Anything for dessert?", "zh": "好选择。需要甜点吗？" },
+            { "sp": "顾客", "en": "Not now, thank you. Maybe later.", "zh": "先不用，谢谢。也许一会儿再说。" }
+          ],
+          "quiz": [
+            { "q": "\"A table for two\" 的意思是：", "options": ["两个人的桌子（两位用餐）", "两张桌子", "桌子在二楼", "两个人站着"], "a": 0, "why": "for + 人数 = 几位用餐。" },
+            { "q": "礼貌点餐可以用：", "options": ["Give me chicken!", "I'll have the chicken, please.", "Chicken! Now!", "I want want chicken."], "a": 1, "why": "I'll have… 是点餐常用礼貌句式。" },
+            { "q": "\"Anything for dessert?\" 在问什么？", "options": ["要甜点吗", "要主食吗", "要买单吗", "要打包吗"], "a": 0, "why": "dessert = 甜点。" }
+          ]
+        },
+        {
+          "id": "L2U6", "title": "问路与方向", "type": "vocab",
+          "items": [
+            { "w": "left", "phone": "left", "zh": "n./adv. 左边", "ex": "Turn left at the corner.", "exZh": "在拐角向左转。" },
+            { "w": "right", "phone": "raɪt", "zh": "n./adv. 右边", "ex": "The bank is on your right.", "exZh": "银行在你右手边。" },
+            { "w": "street", "phone": "striːt", "zh": "n. 街道", "ex": "I live on Park Street.", "exZh": "我住在公园街。" },
+            { "w": "station", "phone": "ˈsteɪʃn", "zh": "n. 车站", "ex": "How do I get to the station?", "exZh": "去车站怎么走？" },
+            { "w": "hospital", "phone": "ˈhɒspɪtl", "zh": "n. 医院", "ex": "The hospital is near here.", "exZh": "医院就在附近。" },
+            { "w": "bank", "phone": "bæŋk", "zh": "n. 银行", "ex": "Is there a bank around here?", "exZh": "这附近有银行吗？" },
+            { "w": "corner", "phone": "ˈkɔːnə", "zh": "n. 拐角", "ex": "The shop is at the corner.", "exZh": "商店在拐角处。" },
+            { "w": "near", "phone": "nɪə", "zh": "prep. 在……附近", "ex": "The hotel is near the sea.", "exZh": "酒店在海边。" },
+            { "w": "straight", "phone": "streɪt", "zh": "adv. 直地", "ex": "Go straight for two blocks.", "exZh": "直走两个街区。" },
+            { "w": "map", "phone": "mæp", "zh": "n. 地图", "ex": "Let me check the map.", "exZh": "我看一下地图。" }
+          ]
+        },
+        {
+          "id": "L2U7", "title": "一般过去时", "type": "grammar", "desc": "讲昨天的事，把动词换成\"过去式\"",
+          "cards": [
+            { "point": "规则动词 + ed", "explain": "play→played, watch→watched, work→worked。三单的 s 去掉再加 ed。", "examples": [{ "en": "I watched a movie last night.", "zh": "我昨晚看了一部电影。" }] },
+            { "point": "不规则动词要背", "explain": "高频不规则：go→went, have→had, eat→ate, see→saw, do→did, buy→bought。", "examples": [{ "en": "We went to the park yesterday.", "zh": "我们昨天去了公园。" }, { "en": "I had lunch with her.", "zh": "我和她一起吃了午饭。" }] },
+            { "point": "否定与疑问用 did", "explain": "didn't + 动词原形；Did + 主语 + 动词原形？动词一律还原！", "examples": [{ "en": "I didn't go out last night.", "zh": "我昨晚没出门。" }, { "en": "Did you see the game?", "zh": "你看比赛了吗？" }] }
+          ],
+          "quiz": [
+            { "q": "I ___ to Beijing last year.", "options": ["go", "goes", "went", "goed"], "a": 2, "why": "go 的过去式是不规则 went。" },
+            { "q": "She ___ TV last night.", "options": ["watch", "watched", "watching", "watches"], "a": 1, "why": "规则动词加 ed。" },
+            { "q": "I didn't ___ breakfast this morning.", "options": ["had", "have", "has", "having"], "a": 1, "why": "didn't 后用动词原形 have。" },
+            { "q": "___ you see Tom yesterday?", "options": ["Do", "Does", "Did", "Are"], "a": 2, "why": "过去时疑问用 Did，动词还原。" },
+            { "q": "They ___ a new car last month.", "options": ["buy", "buyed", "bought", "buys"], "a": 2, "why": "buy 的过去式是 bought。" }
+          ]
+        },
+        {
+          "id": "L2U8", "title": "阅读 · 我的一天", "type": "reading",
+          "text": "My name is David. I get up at six thirty every morning. First, I drink a glass of water and do some exercise. Then I have breakfast with my family. I go to work by bus, and it takes twenty minutes. I work in a small hospital. I am a nurse. At noon, I have lunch with my friends in the hospital. In the evening, I get home at six. After dinner, I read books or watch TV for one hour. I go to bed at ten. I like my life, because every day is different.",
+          "zh": "我叫大卫。我每天早上六点半起床。首先，我喝一杯水并做些运动。然后和家人一起吃早餐。我坐公交上班，路上要二十分钟。我在一家小医院工作，是一名护士。中午，我和朋友在医院吃午饭。傍晚六点到家。晚饭后，我看一小时书或电视。十点上床睡觉。我喜欢我的生活，因为每一天都不一样。",
+          "questions": [
+            { "q": "What time does David get up?", "options": ["At 6:00.", "At 6:30.", "At 7:00.", "At 10:00."], "a": 1, "why": "文中说 I get up at six thirty。" },
+            { "q": "How does David go to work?", "options": ["On foot.", "By car.", "By bus.", "By bike."], "a": 2, "why": "文中说 I go to work by bus。" },
+            { "q": "What is David's job?", "options": ["A teacher.", "A doctor.", "A nurse.", "A driver."], "a": 2, "why": "文中说 I am a nurse。" },
+            { "q": "What does he do after dinner?", "options": ["He exercises.", "He reads or watches TV.", "He goes out with friends.", "He works."], "a": 1, "why": "文中说 After dinner, I read books or watch TV。" },
+            { "q": "Why does David like his life?", "options": ["Because it is easy.", "Because every day is different.", "Because he earns a lot.", "Because he travels a lot."], "a": 1, "why": "文末说 because every day is different。" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L3", "name": "第 3 关 · 进阶表达", "desc": "谈计划、讲经历，写一封得体的邮件", "color": "#8b5cf6",
+      "units": [
+        {
+          "id": "L3U1", "title": "现在进行时与将来时", "type": "grammar", "desc": "正在做什么 & 打算做什么",
+          "cards": [
+            { "point": "be + doing（正在进行）", "explain": "am/is/are + 动词 ing，表示此刻正在发生。", "examples": [{ "en": "I am studying English now.", "zh": "我正在学英语。" }, { "en": "They are waiting for you.", "zh": "他们正在等你。" }] },
+            { "point": "be going to（打算）", "explain": "be going to + 动词原形，表示计划或打算，也用于有根据的预测。", "examples": [{ "en": "I am going to visit my uncle tomorrow.", "zh": "我明天打算去看叔叔。" }, { "en": "It is going to rain.", "zh": "快要下雨了。" }] },
+            { "point": "will（将来）", "explain": "will + 动词原形，表示将来的动作或临时决定。", "examples": [{ "en": "I will call you tonight.", "zh": "我今晚给你打电话。" }, { "en": "She will be here in five minutes.", "zh": "她五分钟后到。" }] }
+          ],
+          "quiz": [
+            { "q": "Listen! Someone ___ the piano.", "options": ["plays", "play", "is playing", "played"], "a": 2, "why": "Listen 提示正在发生，用现在进行时。" },
+            { "q": "I ___ visit my grandparents this weekend.", "options": ["am going to", "will to", "am going", "going to"], "a": 0, "why": "be going to + 动词原形，表计划。" },
+            { "q": "Don't worry. I ___ help you.", "options": ["am helping to", "will", "will to", "am going"], "a": 1, "why": "临时决定用 will + 动词原形。" },
+            { "q": "Look! The bus ___ .", "options": ["come", "comes", "is coming", "came"], "a": 2, "why": "Look! 提示正在进行。" },
+            { "q": "Tomorrow ___ Monday.", "options": ["is going to be", "will be", "shall be", "both A and B"], "a": 3, "why": "客观事实既可用 will be 也可用 is going to be。" }
+          ]
+        },
+        {
+          "id": "L3U2", "title": "城市生活", "type": "vocab",
+          "items": [
+            { "w": "city", "phone": "ˈsɪti", "zh": "n. 城市", "ex": "Shanghai is a big city.", "exZh": "上海是个大城市。" },
+            { "w": "traffic", "phone": "ˈtræfɪk", "zh": "n. 交通", "ex": "The traffic is heavy now.", "exZh": "现在交通很拥堵。" },
+            { "w": "supermarket", "phone": "ˈsuːpəmɑːkɪt", "zh": "n. 超市", "ex": "I buy food at the supermarket.", "exZh": "我在超市买食物。" },
+            { "w": "park", "phone": "pɑːk", "zh": "n. 公园", "ex": "We take a walk in the park.", "exZh": "我们在公园散步。" },
+            { "w": "cinema", "phone": "ˈsɪnəmə", "zh": "n. 电影院", "ex": "There is a new cinema near here.", "exZh": "这附近有家新电影院。" },
+            { "w": "library", "phone": "ˈlaɪbrəri", "zh": "n. 图书馆", "ex": "I study in the library on weekends.", "exZh": "我周末在图书馆学习。" },
+            { "w": "museum", "phone": "mjuˈziːəm", "zh": "n. 博物馆", "ex": "The museum is free on Mondays.", "exZh": "博物馆周一免费。" },
+            { "w": "busy", "phone": "ˈbɪzi", "zh": "adj. 忙碌的", "ex": "This street is always busy.", "exZh": "这条街总是很热闹。" },
+            { "w": "quiet", "phone": "ˈkwaɪət", "zh": "adj. 安静的", "ex": "The library is quiet.", "exZh": "图书馆很安静。" },
+            { "w": "crowded", "phone": "ˈkraʊdɪd", "zh": "adj. 拥挤的", "ex": "The subway is crowded at 8 a.m.", "exZh": "早上八点的地铁很挤。" }
+          ]
+        },
+        {
+          "id": "L3U3", "title": "情态动词 must / should", "type": "grammar", "desc": "必须做 & 建议做，语气大不同",
+          "cards": [
+            { "point": "must（必须）", "explain": "must + 动词原形，语气最强：规定、义务。否定 mustn't = 禁止。", "examples": [{ "en": "You must wear a seatbelt.", "zh": "你必须系安全带。" }, { "en": "You mustn't smoke here.", "zh": "这里禁止吸烟。" }] },
+            { "point": "should（应该）", "explain": "should + 动词原形，语气温和：建议、劝告。", "examples": [{ "en": "You should drink more water.", "zh": "你应该多喝水。" }, { "en": "We should arrive early.", "zh": "我们应该早点到。" }] },
+            { "point": "must be（推测）", "explain": "must be + 名词/形容词 表示很有把握的推测：\"一定是\"。", "examples": [{ "en": "He must be tired.", "zh": "他一定累了。" }] }
+          ],
+          "quiz": [
+            { "q": "You ___ finish your homework before dinner. (妈妈的要求)", "options": ["should", "must", "can", "may"], "a": 1, "why": "强制要求用 must。" },
+            { "q": "You ___ take a break. You look tired. (朋友建议)", "options": ["must", "mustn't", "should", "may not"], "a": 2, "why": "建议语气用 should。" },
+            { "q": "The lights are off. They ___ be asleep.", "options": ["can't", "must", "shouldn't", "needn't"], "a": 1, "why": "must be 表示有把握的推测。" },
+            { "q": "You ___ park here — it's not allowed.", "options": ["mustn't", "shouldn't", "needn't", "don't have"], "a": 0, "why": "mustn't = 禁止。" }
+          ]
+        },
+        {
+          "id": "L3U4", "title": "现在完成时", "type": "grammar", "desc": "经历与结果：have / has + 过去分词",
+          "cards": [
+            { "point": "构成", "explain": "have/has + 过去分词（done）。I/you/we/they 用 have；he/she/it 用 has。", "examples": [{ "en": "I have finished my work.", "zh": "我已经完成了工作。" }, { "en": "She has been to Japan.", "zh": "她去过日本。" }] },
+            { "point": "标志词", "explain": "already（已经）、yet（还）、just（刚刚）、ever（曾经）、never（从未）、for + 时间段、since + 起点。", "examples": [{ "en": "I have already eaten.", "zh": "我已经吃过了。" }, { "en": "He has lived here for ten years.", "zh": "他住在这里十年了。" }] },
+            { "point": "去过 vs 去了", "explain": "have been to = 去过（已回来）；have gone to = 去了（还没回来）。高频考点！", "examples": [{ "en": "He has been to Paris twice.", "zh": "他去过巴黎两次。" }, { "en": "He has gone to Paris.", "zh": "他去巴黎了（还在那）。" }] }
+          ],
+          "quiz": [
+            { "q": "I ___ my homework already.", "options": ["finish", "finished", "have finished", "am finishing"], "a": 2, "why": "already 是完成时标志词。" },
+            { "q": "She ___ in Shanghai since 2015.", "options": ["lives", "lived", "has lived", "is living"], "a": 2, "why": "since + 时间点搭配完成时。" },
+            { "q": "Tom isn't here. He ___ to the library.", "options": ["has been", "has gone", "went", "goes"], "a": 1, "why": "人不在 = has gone to（去了）。" },
+            { "q": "___ you ever ___ sushi?", "options": ["Did, eat", "Have, eaten", "Do, eat", "Are, eating"], "a": 1, "why": "ever 搭配完成时，eat 过去分词是 eaten。" },
+            { "q": "We ___ each other for five years.", "options": ["know", "knew", "have known", "are knowing"], "a": 2, "why": "for + 时间段接完成时。" }
+          ]
+        },
+        {
+          "id": "L3U5", "title": "情景对话 · 打电话约时间", "type": "dialog",
+          "lines": [
+            { "sp": "A", "en": "Hello, this is Lisa speaking. May I speak to Mr. Wang?", "zh": "你好，我是丽莎。请问王先生在吗？" },
+            { "sp": "B", "en": "Hi Lisa, this is Wang speaking. How can I help you?", "zh": "你好丽莎，我是王。有什么可以帮您？" },
+            { "sp": "A", "en": "I'm calling about our meeting. Would Thursday morning work for you?", "zh": "我打电话是想谈我们的会议。周四上午您方便吗？" },
+            { "sp": "B", "en": "Let me check my schedule… I'm afraid I have another meeting at nine. How about ten thirty?", "zh": "我看一下日程……恐怕九点我另有会。十点半怎么样？" },
+            { "sp": "A", "en": "Ten thirty is fine with me. Shall we say one hour?", "zh": "十点半没问题。我们定一小时可以吗？" },
+            { "sp": "B", "en": "Sounds good. I'll send you a calendar invite after the call.", "zh": "可以。通话后我把日历邀请发给您。" },
+            { "sp": "A", "en": "Perfect. Thank you, Mr. Wang. See you on Thursday.", "zh": "太好了，谢谢王先生。周四见。" }
+          ],
+          "quiz": [
+            { "q": "电话里自报家门说：", "options": ["I am Lisa.", "This is Lisa speaking.", "Lisa here is.", "It's me, Lisa!"], "a": 1, "why": "电话专用：This is … speaking。" },
+            { "q": "\"Would Thursday morning work for you?\" 在问什么？", "options": ["周四上午你上班吗", "周四上午你方便吗", "周四上午你工作多吗", "周四早上你有会吗"], "a": 1, "why": "work for sb = 对某人可行/方便。" },
+            { "q": "\"I'm afraid…\" 的作用是：", "options": ["表示害怕", "委婉地拒绝/表达坏消息", "表示确认", "表示惊讶"], "a": 1, "why": "I'm afraid 是礼貌的缓冲语。" }
+          ]
+        },
+        {
+          "id": "L3U6", "title": "阅读 · 周末旅行", "type": "reading",
+          "text": "Last weekend, my friend and I took a short trip to Hangzhou. We left on Saturday morning and came back on Sunday evening. On the first day, we visited the West Lake. The weather was sunny, so we rented a small boat and rowed for an hour. In the afternoon, we walked along the old street and tried the famous local food. Everything was delicious, especially the fish. On Sunday, we got up early and climbed a hill to see the tea fields. It was tiring, but the view was worth it. We have already decided to go back next spring, because we heard the scenery is even better then.",
+          "zh": "上周末，我和朋友去杭州短途旅行。周六早上出发，周日晚上返回。第一天我们游览了西湖。天气晴朗，我们租了一条小船划了一个小时。下午，我们沿着老街散步，品尝了著名的当地美食，一切都很好吃，尤其是鱼。周日我们早起爬山看茶园。虽然累，但风景值得。我们已经决定明年春天再去，因为听说那时的风景更美。",
+          "questions": [
+            { "q": "When did they come back?", "options": ["Saturday morning.", "Saturday evening.", "Sunday morning.", "Sunday evening."], "a": 3, "why": "文中说 came back on Sunday evening。" },
+            { "q": "What did they do at the West Lake?", "options": ["They climbed a hill.", "They rented a boat.", "They drank tea.", "They visited a museum."], "a": 1, "why": "文中说 rented a small boat。" },
+            { "q": "What was the best food for the writer?", "options": ["The fish.", "The tea.", "The cake.", "The noodles."], "a": 0, "why": "especially the fish 说明鱼最好吃。" },
+            { "q": "Why will they go back next spring?", "options": ["The tickets are cheaper.", "The scenery is better.", "They forgot something.", "They love the hotel."], "a": 1, "why": "文末说 the scenery is even better then。" },
+            { "q": "How was the hill climbing?", "options": ["Easy and fun.", "Tiring but worth it.", "Boring.", "Too dangerous."], "a": 1, "why": "tiring, but the view was worth it。" }
+          ]
+        },
+        {
+          "id": "L3U7", "title": "写作 · 一封邮件", "type": "writing",
+          "patterns": [
+            { "zh": "开头问候：希望一切顺利", "en": "I hope this email finds you well." },
+            { "zh": "说明来意：我写信是想……", "en": "I am writing to ___." },
+            { "zh": "提出请求：您能……吗？", "en": "Could you please ___?" },
+            { "zh": "结尾：期待您的回复", "en": "I look forward to your reply." }
+          ],
+          "example": { "en": "Dear Mr. Smith,\n\nI hope this email finds you well. I am writing to ask about the report deadline. Could you please confirm the date and format? I look forward to your reply.\n\nBest regards,\nLin", "zh": "尊敬的史密斯先生：\n\n希望您一切顺利。我写信想询问报告的截止时间。您能确认一下日期和格式吗？期待您的回复。\n\n此致\n林" },
+          "tip": "邮件三段式：问候 → 来意 → 收尾。套用 4 个句型，把任何主题替换进 to ___ 和 Could you please ___ 里，就是一封得体的英文邮件。"
+        }
+      ]
+    },
+    {
+      "id": "L4", "name": "第 4 关 · 熟练运用", "desc": "从句、被动、职场与观点写作，听读写全面进阶", "color": "#ec4899",
+      "units": [
+        {
+          "id": "L4U1", "title": "被动语态", "type": "grammar", "desc": "be + 过去分词，重点换成承受者",
+          "cards": [
+            { "point": "基本构成", "explain": "be + 过去分词。时态变化体现在 be 上：is built（现在）/ was built（过去）/ has been built（完成）/ will be built（将来）。", "examples": [{ "en": "This bridge was built in 1998.", "zh": "这座桥建于 1998 年。" }, { "en": "English is spoken here.", "zh": "这里说英语。" }] },
+            { "point": "何时用被动", "explain": "① 不知道谁做的；② 做的人不重要；③ 强调承受者。科技、新闻里特别常见。", "examples": [{ "en": "My phone was stolen yesterday.", "zh": "我的手机昨天被偷了。（不知道是谁）" }, { "en": "The results will be announced soon.", "zh": "结果很快公布。（强调结果）" }] },
+            { "point": "带 by 的被动", "explain": "需要说出动作执行者时加 by + 人。", "examples": [{ "en": "This song was written by Jay.", "zh": "这首歌是杰伦写的。" }] }
+          ],
+          "quiz": [
+            { "q": "The window ___ by the boy yesterday.", "options": ["broke", "was broken", "is broken", "has broken"], "a": 1, "why": "过去被动：was + 过去分词 broken。" },
+            { "q": "Rice ___ in the south of China.", "options": ["grows", "is grown", "grew", "is growing"], "a": 1, "why": "米被种植 → 被动 is grown。" },
+            { "q": "The new hospital ___ next year.", "options": ["will build", "will be built", "is built", "was built"], "a": 1, "why": "将来被动：will be built。" },
+            { "q": "This novel ___ by Mo Yan.", "options": ["wrote", "was written", "is writing", "writes"], "a": 1, "why": "带 by 的过去被动 was written。" }
+          ]
+        },
+        {
+          "id": "L4U2", "title": "定语从句", "type": "grammar", "desc": "用 who / which / that 给名词加说明",
+          "cards": [
+            { "point": "先行词是人用 who", "explain": "The man who called you is my boss.（给你打电话的那个人是我老板）who 在从句里做主语。", "examples": [{ "en": "She is the teacher who helped me.", "zh": "她就是帮助过我的那位老师。" }] },
+            { "point": "先行词是物用 which/that", "explain": "The book which/that I read is great.（我读的那本书很棒）which/that 做宾语时可省略。", "examples": [{ "en": "The phone that I bought last week works well.", "zh": "我上周买的手机很好用。" }] },
+            { "point": "whose 表所属", "explain": "whose = 谁的。The girl whose father is a pilot…（那个爸爸是飞行员的女孩……）", "examples": [{ "en": "I met a man whose dog can sing.", "zh": "我遇到一个人，他的狗会唱歌。" }] }
+          ],
+          "quiz": [
+            { "q": "The woman ___ lives next door is a doctor.", "options": ["which", "who", "whose", "whom"], "a": 1, "why": "先行词是人，用 who。" },
+            { "q": "I like the book ___ you gave me.", "options": ["who", "whose", "which", "where"], "a": 2, "why": "先行词是物，用 which（做宾语也可省略/换 that）。" },
+            { "q": "That is the boy ___ bike was stolen.", "options": ["who", "which", "whose", "that"], "a": 2, "why": "后面是\"自行车被偷\"，表所属用 whose。" },
+            { "q": "This is the house ___ I was born.", "options": ["which", "who", "where", "whose"], "a": 2, "why": "出生\"在房子里\"表地点，用 where。" }
+          ]
+        },
+        {
+          "id": "L4U3", "title": "职场高频词", "type": "vocab",
+          "items": [
+            { "w": "meeting", "phone": "ˈmiːtɪŋ", "zh": "n. 会议", "ex": "We have a meeting at ten.", "exZh": "我们十点有个会。" },
+            { "w": "report", "phone": "rɪˈpɔːt", "zh": "n. 报告", "ex": "I need to finish the report today.", "exZh": "我今天得完成这份报告。" },
+            { "w": "project", "phone": "ˈprɒdʒekt", "zh": "n. 项目", "ex": "The project starts in May.", "exZh": "项目五月启动。" },
+            { "w": "customer", "phone": "ˈkʌstəmə", "zh": "n. 客户", "ex": "The customer is always right.", "exZh": "客户永远是对的。" },
+            { "w": "service", "phone": "ˈsɜːvɪs", "zh": "n. 服务", "ex": "Their service is excellent.", "exZh": "他们的服务很棒。" },
+            { "w": "product", "phone": "ˈprɒdʌkt", "zh": "n. 产品", "ex": "This product sells well.", "exZh": "这个产品卖得好。" },
+            { "w": "manage", "phone": "ˈmænɪdʒ", "zh": "v. 管理", "ex": "She manages a team of five.", "exZh": "她管理一个五人团队。" },
+            { "w": "decide", "phone": "dɪˈsaɪd", "zh": "v. 决定", "ex": "We must decide today.", "exZh": "我们必须今天决定。" },
+            { "w": "explain", "phone": "ɪkˈspleɪn", "zh": "v. 解释", "ex": "Let me explain the plan.", "exZh": "我来解释一下这个计划。" },
+            { "w": "improve", "phone": "ɪmˈpruːv", "zh": "v. 改进", "ex": "I want to improve my English.", "exZh": "我想提高我的英语。" }
+          ]
+        },
+        {
+          "id": "L4U4", "title": "阅读 · 新闻短讯", "type": "reading",
+          "text": "A new city library will be opened next month in the center of Riverside District. The building, which was designed by a famous local architect, has six floors and over 200,000 books. It was reported that the project cost 80 million yuan and took two years to complete. The library will be free for all citizens, and it will offer reading rooms, a children's area, and 24-hour self-service borrowing machines. \"We hope the library will become a living room for the whole city,\" said the director at a press meeting on Monday. Computer classes for old people will also be given every Saturday morning.",
+          "zh": "一座新的市图书馆将于下个月在滨河区中心开放。该建筑由当地一位著名建筑师设计，共六层，藏书超过 20 万册。据报道，项目耗资 8000 万元，历时两年建成。图书馆将对全体市民免费开放，并提供阅览室、儿童区和 24 小时自助借还机。馆长在周一的新闻发布会上说：\"我们希望这座图书馆成为整个城市的客厅。\"此外，每周六上午还将为老年人开设电脑课程。",
+          "questions": [
+            { "q": "Where is the new library?", "options": ["In a school.", "In the center of Riverside District.", "Near the old museum.", "Next to a hospital."], "a": 1, "why": "文中说 in the center of Riverside District。" },
+            { "q": "How much did the project cost?", "options": ["8 million yuan.", "80 million yuan.", "800 million yuan.", "It is free."], "a": 1, "why": "cost 80 million yuan。" },
+            { "q": "Who can use the library for free?", "options": ["Only students.", "Only old people.", "All citizens.", "Only members."], "a": 2, "why": "free for all citizens。" },
+            { "q": "What will be offered on Saturday mornings?", "options": ["Computer classes for old people.", "Story time for kids.", "Free concerts.", "Book sales."], "a": 0, "why": "文末说 computer classes for old people。" },
+            { "q": "\"a living room for the whole city\" is ___", "options": ["a real room in the library", "a metaphor (比喻) for a comfortable public space", "the name of the library", "a reading room"], "a": 1, "why": "比喻：让市民像在家一样放松的公共空间。" }
+          ]
+        },
+        {
+          "id": "L4U5", "title": "写作 · 表达观点", "type": "writing",
+          "patterns": [
+            { "zh": "亮明观点：我认为……", "en": "In my opinion, ___." },
+            { "zh": "给出理由：原因有三点", "en": "There are three reasons. First, ___. Second, ___. Finally, ___." },
+            { "zh": "让步反驳：有人认为……但……", "en": "Some people say ___, but I think ___." },
+            { "zh": "总结：总之", "en": "In conclusion, ___." }
+          ],
+          "example": { "en": "In my opinion, learning English is very useful. There are three reasons. First, English helps me read technical documents. Second, I can talk with people from other countries. Finally, it makes travel much easier. Some people say apps can translate everything, but I think real communication needs real language. In conclusion, English is a key skill for my future.", "zh": "在我看来，学英语非常有用。原因有三点：第一，英语帮我读技术文档；第二，我能和其他国家的人交流；第三，它让旅行容易得多。有人说 App 能翻译一切，但我认为真正的交流需要真正的语言。总之，英语是我未来的关键技能。" },
+          "tip": "观点文四步走：观点 → 理由 → 反驳 → 总结。用 First/Second/Finally 把理由排好队，逻辑立刻清晰。"
+        },
+        {
+          "id": "L4U6", "title": "终极综合挑战", "type": "review", "desc": "从全部已学词汇自动抽题，检验通关成果"
+        }
+      ]
+    }
+  ]
+}

@@ -1,13 +1,16 @@
 @echo off
-chcp 65001 >nul
 cd /d "%~dp0"
-echo WordLens 正在启动...
-echo 快捷键 Ctrl+Shift+W 唤起/收起翻译窗口
-echo 托盘图标右键可退出
-
+echo ============================================================
+echo   WordLens - Hotkey Translation Popup
+echo ============================================================
+echo.
+echo   First launch: a setup window will pop up. Press your
+echo   preferred key combo (e.g. Ctrl+Shift+D) and click OK.
+echo   Later launches use the saved hotkey automatically.
+echo.
 powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "%~dp0hotkey.ps1"
 if errorlevel 1 (
   echo.
-  echo 启动失败，请查看 hotkey.log
+  echo   Failed to start. See hotkey.log for details.
   pause
 )
