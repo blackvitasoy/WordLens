@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WordLens · 词典式英语理解</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --card:#ffffff; --ink:#1f2430; --sub:#5b6472; --line:#e6e9ee;
+    --accent:#c0392b; --accent-soft:#fbeceb; --blue:#2c6fbb; --blue-soft:#eaf2fb;
+    --green:#1e7a5a; --green-soft:#e7f4ee; --amber:#9a6b12; --amber-soft:#fbf1dc;
+    --shadow:0 1px 3px rgba(20,30,50,.06),0 8px 28px rgba(20,30,50,.05);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:15px;line-height:1.6}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px 80px}
+
+  header{padding:40px 0 22px;text-align:center}
+  .brand{display:flex;align-items:center;justify-content:center;gap:10px;font-size:26px;font-weight:800;letter-spacing:-.5px}
+  .brand .lens{width:30px;height:30px;border-radius:9px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:17px;transform:rotate(-12deg)}
+  .tagline{color:var(--sub);font-size:13.5px;margin-top:8px}
+
+  .searchbar{position:relative;margin:18px auto 8px;max-width:640px}
+  .searchbar input{width:100%;height:56px;border:2px solid var(--line);border-radius:14px;background:var(--card);
+    padding:0 118px 0 20px;font-size:18px;color:var(--ink);outline:none;box-shadow:var(--shadow);transition:.15s}
+  .searchbar input:focus{border-color:var(--accent)}
+  .searchbar button{position:absolute;right:8px;top:8px;height:40px;padding:0 20px;border:0;border-radius:9px;
+    background:var(--accent);color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+  .searchbar button:hover{filter:brightness(.94)}
+  .searchbar button:disabled{opacity:.5;cursor:wait}
+  .hint{text-align:center;color:var(--sub);font-size:12.5px;margin:10px 0 4px}
+  .chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+  .chip{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:999px;
+    padding:5px 14px;font-size:12.5px;cursor:pointer;transition:.15s}
+  .chip:hover{border-color:var(--accent);color:var(--accent)}
+
+  #status{text-align:center;color:var(--sub);font-size:13px;min-height:22px;margin-top:20px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
+    padding:28px 30px;margin-top:8px;animation:rise .28s ease}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    border-bottom:1px solid var(--line);padding-bottom:20px}
+  .wordbox h1{font-size:38px;margin:0;letter-spacing:-1px;line-height:1.1}
+  .offline-tag{display:inline-block;font-size:11px;color:var(--amber);background:var(--amber-soft);
+    padding:2px 8px;border-radius:6px;margin-left:10px;vertical-align:middle;font-weight:500}
+  .phones{display:flex;gap:18px;margin-top:14px;flex-wrap:wrap}
+  .phone{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--sub)}
+  .phone .tag{font-size:11px;font-weight:700;color:#fff;background:#9aa4b2;border-radius:5px;padding:1px 6px}
+  .phone .txt{font-family:"Segoe UI",sans-serif;color:var(--ink);font-size:15.5px}
+  .play{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--blue-soft);
+    color:var(--blue);cursor:pointer;font-size:12px;display:grid;place-items:center;padding:0;transition:.15s}
+  .play:hover{background:var(--blue);color:#fff}
+  .actions{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;
+    padding:7px 13px;font-size:12.5px;cursor:pointer;transition:.15s;white-space:nowrap}
+  .btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-soft)}
+
+  .grid{display:grid;grid-template-columns:1fr 290px;gap:32px;margin-top:24px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr;gap:24px}.wordbox h1{font-size:32px}.card{padding:22px}}
+
+  .sec{margin-bottom:26px}
+  .sec-title{font-size:12px;font-weight:700;letter-spacing:1.4px;color:var(--sub);text-transform:uppercase;
+    margin:0 0 14px;display:flex;align-items:center;gap:9px}
+  .sec-title::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .sense{display:flex;gap:14px;margin-bottom:16px}
+  .pos{flex:0 0 auto;font-style:italic;font-weight:700;color:var(--accent);font-size:15px;
+    background:var(--accent-soft);padding:2px 10px;border-radius:6px;height:fit-content;min-width:52px;text-align:center}
+  .defs{margin:0;padding:0;list-style:none}
+  .defs li{position:relative;padding-left:18px;margin-bottom:4px}
+  .defs li::before{content:"";position:absolute;left:2px;top:11px;width:5px;height:5px;border-radius:50%;background:#b6bec9}
+  .defs .n{color:var(--sub);font-size:12px;margin-right:6px}
+
+  .ex{padding:12px 14px;border-left:3px solid var(--blue);background:#fafbfd;border-radius:0 8px 8px 0;margin-bottom:10px}
+  .ex .en{font-size:14.5px;color:var(--ink)}
+  .ex .en b{color:var(--accent);font-weight:700;background:var(--accent-soft);padding:0 2px;border-radius:2px}
+  .ex .zh{color:var(--sub);font-size:13.5px;margin-top:4px}
+  .ex .src{font-size:11px;color:#a0a8b4;margin-top:4px}
+
+  .side .block{background:#fafbfd;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+  .side h3{margin:0 0 12px;font-size:13px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:7px}
+  .side h3 .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  .kv{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:5px 0;border-bottom:1px dashed var(--line)}
+  .kv:last-child{border-bottom:0}
+  .kv .k{color:var(--sub)} .kv .v{font-weight:600;text-align:right}
+  .taglist{display:flex;flex-wrap:wrap;gap:6px}
+  .tag2{font-size:12px;padding:4px 9px;border-radius:6px;background:var(--green-soft);color:var(--green);border:1px solid #d3e9dd}
+  .phrase{padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px}
+  .phrase:last-child{border-bottom:0}
+  .phrase .e{font-weight:600;color:var(--blue)}
+  .phrase .z{color:var(--sub);font-size:12.5px}
+  .footnote{text-align:center;color:#a0a8b4;font-size:11.5px;margin-top:26px}
+
+  .empty{text-align:center;color:var(--sub);padding:50px 20px}
+  .empty .big{font-size:44px;margin-bottom:10px;opacity:.5}
+
+  .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:#1f2430;color:#fff;padding:10px 20px;border-radius:9px;font-size:13px;
+    opacity:0;pointer-events:none;transition:.25s;z-index:99}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="lens">🔍</span> WordLens</div>
+    <div class="tagline">像剑桥词典一样理解英语 —— 词性 · 读音 · 翻译 · 例句 · 词族</div>
+  </header>
+
+  <div class="searchbar">
+    <input id="q" type="text" placeholder="输入英文单词或短语，如 artificial" autocomplete="off" spellcheck="false">
+    <button id="go">查询</button>
+  </div>
+  <div class="hint">回车即可查询 · 支持单词、短语、词组</div>
+  <div class="chips" id="chips"></div>
+
+  <div id="status"></div>
+  <div id="result"></div>
+
+  <div class="footnote">数据来自有道词典（柯林斯 / 牛津双语例句）· 本地运行，数据不上传</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const q=$('#q'), go=$('#go'), statusEl=$('#status'), resultEl=$('#result');
+const history = JSON.parse(localStorage.getItem('wordlens_history')||'[]').slice(0,12);
+let current=null;
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+
+function renderChips(){
+  $('#chips').innerHTML = history.map(w=>`<span class="chip" data-w="${esc(w)}">${esc(w)}</span>`).join('');
+  document.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{q.value=c.dataset.w;doLookup()});
+}
+function pushHistory(w){
+  const i=history.indexOf(w); if(i>=0)history.splice(i,1);
+  history.unshift(w); if(history.length>12)history.pop();
+  localStorage.setItem('wordlens_history',JSON.stringify(history)); renderChips();
+}
+
+function highlight(en, word){
+  if(!en) return '';
+  const safe=esc(en);
+  try{
+    const first=word.trim().split(/\s+/)[0].replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    if(!first) return safe;
+    return safe.replace(new RegExp('\\b('+first+')\\b','gi'),'<b>$1</b>');
+  }catch(e){return safe}
+}
+
+function play(url,btn){
+  if(!url){toast('暂无发音');return}
+  const a=new Audio(url);
+  a.onerror=()=>toast('发音加载失败');
+  a.play(); btn.animate([{transform:'scale(1)'},{transform:'scale(.85)'},{transform:'scale(1)'}],{duration:260});
+}
+
+function render(d){
+  if(d.error && !d.senses.length && !d.examples.length){
+    resultEl.innerHTML=`<div class="card"><div class="empty"><div class="big">🔎</div>${esc(d.error)}</div></div>`;
+    return;
+  }
+  let sensesHtml=(d.senses||[]).map(s=>`
+    <div class="sense">
+      <div class="pos">${esc(s.pos)}</div>
+      <ul class="defs">${(s.defs||[]).map((x,i)=>`<li><span class="n">${i+1}.</span>${esc(x)}</li>`).join('')}</ul>
+    </div>`).join('');
+
+  let exHtml=(d.examples||[]).map(e=>`
+    <div class="ex">
+      <div class="en">${highlight(e.en,d.word)}</div>
+      ${e.zh?`<div class="zh">${esc(e.zh)}</div>`:''}
+      ${e.source?`<div class="src">— ${esc(e.source)}</div>`:''}
+    </div>`).join('');
+
+  let wfHtml=(d.wordforms||[]).map(x=>`<div class="kv"><span class="k">${esc(x.name)}</span><span class="v">${esc(x.value)}</span></div>`).join('');
+  let derHtml=(d.derivatives||[]).map(x=>`<div class="kv"><span class="k">${esc(x.w)} ${esc(x.pos)}</span><span class="v">${esc(x.zh)}</span></div>`).join('');
+  let synHtml=(d.synonyms||[]).map(x=>{
+    const w=typeof x==='string'?x:(x.w||''); const zh=typeof x==='object'?(x.zh||''):'';
+    return `<span class="tag2" title="${esc(zh)}">${esc(w)}${zh?' · '+esc(zh):''}</span>`;
+  }).join('');
+  let phrHtml=(d.phrases||[]).map(x=>`<div class="phrase"><span class="e">${esc(x.en)}</span> ${x.zh?`<span class="z">${esc(x.zh)}</span>`:''}</div>`).join('');
+
+  resultEl.innerHTML=`
+  <div class="card">
+    <div class="head">
+      <div class="wordbox">
+        <h1>${esc(d.word)}${d._offline?'<span class="offline-tag">离线词库</span>':''}</h1>
+        <div class="phones">
+          ${d.ukphone?`<div class="phone"><span class="tag">UK</span><span class="txt">/ ${esc(d.ukphone)} /</span><button class="play" data-src="${esc(d.ukSpeech)}" title="英式发音">▶</button></div>`:''}
+          ${d.usphone?`<div class="phone"><span class="tag">US</span><span class="txt">/ ${esc(d.usphone)} /</span><button class="play" data-src="${esc(d.usSpeech)}" title="美式发音">▶</button></div>`:''}
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="copyBtn">复制卡片</button>
+        <button class="btn" id="exportBtn">导出 HTML</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="main">
+        <div class="sec">
+          <h2 class="sec-title">释义 / Meanings</h2>
+          ${sensesHtml||'<div style="color:var(--sub)">暂无释义</div>'}
+        </div>
+        <div class="sec">
+          <h2 class="sec-title">双语例句 / Examples</h2>
+          ${exHtml||'<div style="color:var(--sub)">暂无例句</div>'}
+        </div>
+      </div>
+      <aside class="side">
+        ${phrHtml?`<div class="block"><h3><span class="dot"></span>常见搭配</h3>${phrHtml}</div>`:''}
+        ${wfHtml?`<div class="block"><h3><span class="dot"></span>词形变化</h3>${wfHtml}</div>`:''}
+        ${derHtml?`<div class="block"><h3><span class="dot"></span>派生词</h3>${derHtml}</div>`:''}
+        ${synHtml?`<div class="block"><h3><span class="dot"></span>同义词</h3><div class="taglist">${synHtml}</div></div>`:''}
+      </aside>
+    </div>
+  </div>`;
+
+  document.querySelectorAll('.play').forEach(b=>b.onclick=()=>play(b.dataset.src,b));
+  $('#copyBtn').onclick=()=>copyCard(d);
+  $('#exportBtn').onclick=()=>exportHtml(d);
+}
+
+function plainText(d){
+  let s=`${d.word}\n`;
+  if(d.ukphone)s+=`UK / ${d.ukphone}/\n`; if(d.usphone)s+=`US / ${d.usphone}/\n`;
+  s+='\n【释义】\n';
+  (d.senses||[]).forEach(x=>{s+=`${x.pos} ${(x.defs||[]).join('；')}\n`});
+  s+='\n【例句】\n';
+  (d.examples||[]).forEach((x,i)=>{s+=`${i+1}. ${x.en}\n   ${x.zh}\n`});
+  if((d.phrases||[]).length){s+='\n【常见搭配】\n';d.phrases.forEach(x=>s+=`${x.en} ${x.zh}\n`)}
+  if((d.wordforms||[]).length){s+='\n【词形变化】\n';d.wordforms.forEach(x=>s+=`${x.name}: ${x.value}\n`)}
+  if((d.derivatives||[]).length){s+='\n【派生词】\n';d.derivatives.forEach(x=>s+=`${x.w} ${x.pos} ${x.zh}\n`)}
+  if((d.synonyms||[]).length){s+='\n【同义词】\n'+d.synonyms.map(x=>typeof x==='string'?x:(x.w+(x.zh?'('+x.zh+')':''))).join(', ')+'\n'}
+  return s;
+}
+function copyCard(d){
+  const txt=plainText(d);
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(txt).then(()=>toast('已复制卡片文本')).catch(()=>fallbackCopy(txt))}
+  else fallbackCopy(txt);
+}
+function fallbackCopy(txt){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');toast('已复制卡片文本')}catch(e){toast('复制失败')}ta.remove()}
+
+function exportHtml(d){
+  const doc=`<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>${esc(d.word)} - WordLens</title>
+<style>body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;max-width:720px;margin:40px auto;padding:0 24px;color:#1f2430;line-height:1.7}
+h1{font-size:36px;margin:0 0 6px}.ph{color:#5b6472;margin-bottom:24px}h2{font-size:14px;color:#c0392b;border-bottom:2px solid #fbeceb;padding-bottom:6px;margin-top:28px}
+.pos{font-style:italic;font-weight:700;color:#c0392b}li{margin:4px 0}.ex{margin:12px 0;padding-left:12px;border-left:3px solid #2c6fbb}.ex .zh{color:#5b6472;font-size:14px}
+small{color:#a0a8b4}</style></head><body>
+<h1>${esc(d.word)}</h1><div class="ph">${d.ukphone?'UK /'+esc(d.ukphone)+'/ ':''}${d.usphone?'US /'+esc(d.usphone)+'/':''}</div>
+<h2>释义</h2><ul>${(d.senses||[]).map(s=>`<li><span class="pos">${esc(s.pos)}</span> ${(s.defs||[]).map(esc).join('；')}</li>`).join('')}</ul>
+<h2>双语例句</h2>${(d.examples||[]).map(e=>`<div class="ex"><div>${highlight(e.en,d.word)}</div><div class="zh">${esc(e.zh)}</div></div>`).join('')}
+${(d.phrases||[]).length?`<h2>常见搭配</h2><ul>${d.phrases.map(x=>`<li>${esc(x.en)} ${esc(x.zh)}</li>`).join('')}</ul>`:''}
+${(d.wordforms||[]).length?`<h2>词形变化</h2><ul>${d.wordforms.map(x=>`<li>${esc(x.name)}: ${esc(x.value)}</li>`).join('')}</ul>`:''}
+${(d.derivatives||[]).length?`<h2>派生词</h2><ul>${d.derivatives.map(x=>`<li>${esc(x.w)} ${esc(x.pos)} ${esc(x.zh)}</li>`).join('')}</ul>`:''}
+${(d.synonyms||[]).length?`<h2>同义词</h2><p>${d.synonyms.map(x=>typeof x==='string'?esc(x):esc(x.w)+(x.zh?' ('+esc(x.zh)+')':'')).join(', ')}</p>`:''}
+<p><small>WordLens · 数据来自有道词典</small></p></body></html>`;
+  const blob=new Blob([doc],{type:'text/html;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=d.word.replace(/\s+/g,'_')+'_WordLens.html';
+  a.click();URL.revokeObjectURL(a.href);toast('已导出 HTML');
+}
+
+async function doLookup(){
+  const w=q.value.trim();
+  if(!w){toast('请输入单词');q.focus();return}
+  go.disabled=true;statusEl.textContent='查询中…';resultEl.innerHTML='';
+  try{
+    const res=await fetch('/api/lookup?word='+encodeURIComponent(w));
+    const d=await res.json();
+    current=d; render(d); statusEl.textContent='';
+    if(!d._offline && !d.error) pushHistory(d.word||w);
+  }catch(e){statusEl.textContent='';resultEl.innerHTML=`<div class="card"><div class="empty">服务连接失败，请确认已启动 WordLens 服务</div></div>`}
+  finally{go.disabled=false}
+}
+
+go.onclick=doLookup;
+q.onkeydown=e=>{if(e.key==='Enter')doLookup()};
+renderChips();
+q.focus();
+</script>
+</body>
+</html>
